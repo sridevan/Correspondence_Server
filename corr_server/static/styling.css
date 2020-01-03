@@ -1,0 +1,5 @@
+.display-corr {
+    -moz-column-width: 500px;
+    /* Chrome, Safari, Opera */
+    -webkit-column-width: 500px;
+}
