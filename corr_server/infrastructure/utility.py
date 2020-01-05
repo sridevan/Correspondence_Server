@@ -386,3 +386,11 @@ def create_dict(lst1):
         dict_corr[ife] = sublist
 
     return dict_corr
+
+
+def build_uid(query_list, query_ife):
+    range_list = []
+    for sublist in query_list:
+        sublist = map(lambda orig_string: query_ife + '|%|' + orig_string, sublist)
+        range_list.append(sublist)
+    return range_list
