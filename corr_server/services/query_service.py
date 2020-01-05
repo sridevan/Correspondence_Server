@@ -3,9 +3,9 @@ from data.models import UnitInfo, LoopInfo
 from infrastructure.utility import get_sorted_units, sort_list, build_uid
 
 
-def get_complete_units(query_list):
-    query_ife = '5J7L|1|DA|%|'
-    incomplete_list = [query_ife + elem for elem in query_list]
+def get_complete_units(core_nts, query_ife):
+    query_ife = query_ife + '|%|'
+    incomplete_list = [query_ife + elem for elem in core_nts]
 
     complete_units = []
     for unit in incomplete_list:
@@ -93,12 +93,12 @@ def get_query_units(query_type, query_list, query_ife):
 
     elif query_type == 'multiple_ranges':
 
-        query_ife = '|'.join(query_list[0][0].split('|')[:3])
-        query_pdb = query_list[0][0].split('|')[0]
-        query_chain = query_list[0][0].split('|')[2]
-        chain_idx = get_chain_idx(query_list)
+        query_pdb = query_ife.split('|')[0]
+        query_chain = query_ife.split('|')[2]
+        units_range = build_uid(query_list, query_ife)
+        chain_idx = get_chain_idx(units_range)
         chain_idx.sort()
-        # partition_size = len(query_list)
+        partition_size = len(query_list)
         # Partition the list into a list of lists containing the start and end units of each range
         chain_idx = [chain_idx[i:i + 2] for i in range(0, len(chain_idx), 2)]
 
@@ -110,6 +110,8 @@ def get_query_units(query_type, query_list, query_ife):
                 query_units.append(row.unit_id)
 
         query_units = list(OrderedDict.fromkeys(query_units))
+
+        return query_units
 
     elif query_type == 'units_str':
         incomplete_units = []
