@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from data.models import UnitInfo, LoopInfo
-from infrastructure.utility import get_sorted_units, sort_list
+from infrastructure.utility import get_sorted_units, sort_list, build_uid
 
 
 def get_complete_units(query_list):
@@ -61,23 +61,25 @@ def get_chain_idx(query):
 
     chain_idx = []
     for sublist in query:
-        units_query = UnitInfo.query.filter(UnitInfo.unit_id.in_(sublist))
+        for unit in sublist:
+            units_query = UnitInfo.query.filter(UnitInfo.unit_id.like(unit))
 
-        for rows in units_query:
-            chain_idx.append(rows.chain_index)
+            for rows in units_query:
+                chain_idx.append(rows.chain_index)
 
     return chain_idx
 
 
-def get_query_units(query_type, query_list):
+def get_query_units(query_type, query_list, query_ife):
     query_units = []
 
     if query_type == 'single_range':
 
-        query_ife = '|'.join(query_list[0][0].split('|')[:3])
-        query_pdb = query_list[0][0].split('|')[0]
-        query_chain = query_list[0][0].split('|')[2]
-        chain_idx = get_chain_idx(query_list)
+        query_pdb = query_ife.split('|')[0]
+        query_chain = query_ife.split('|')[2]
+        units_range = build_uid(query_list, query_ife)
+
+        chain_idx = get_chain_idx(units_range)
         chain_idx.sort()
 
         units_query = UnitInfo.query.filter_by(pdb_id=query_pdb, chain=query_chain). \
@@ -86,6 +88,8 @@ def get_query_units(query_type, query_list):
 
         for row in units_query:
             query_units.append(row.unit_id)
+
+        return query_units
 
     elif query_type == 'multiple_ranges':
 
@@ -112,7 +116,7 @@ def get_query_units(query_type, query_list):
         for unit in query_list:
             incomplete_units.append(unit[0])
             query_units = get_complete_units(incomplete_units)
-            query_ife = '|'.join(query_units[0].split('|')[:3])
+            # query_ife = '|'.join(query_units[0].split('|')[:3])
 
 
     # todo work to do
@@ -126,10 +130,11 @@ def get_query_units(query_type, query_list):
             loop_position = row.loop_name
 
         query_units = get_sorted_units(unsorted_units)
-        query_ife = '|'.join(query_units[0].split('|')[:3])
-        query_pdb = query_units[0].split('|')[0]
+        # query_ife = '|'.join(query_units[0].split('|')[:3])
+        # query_pdb = query_units[0].split('|')[0]
 
-    return query_ife, query_units
+    return query_units
+    # return query_ife, query_units
 
 
 def get_query_units_relative(query_type, query_list):
