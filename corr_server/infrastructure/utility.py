@@ -128,6 +128,19 @@ def build_coord(corr_list):
     return ife_list, ife_coord
 
 
+def build_coord_core(ife_list, core_list):
+    # Create list of coordinates as strings
+    coord_unordered = []
+    for x in core_list:
+        x = ','.join(x)
+        coord_unordered.append(x)
+
+    # Create a dictionary of ifes with coordinate data
+    ife_coord_core = dict(zip(ife_list, coord_unordered))
+
+    return ife_coord_core
+
+
 def build_coord_double(corr_list, size):
     # Create list of IFES
     lsu_list = []
@@ -211,6 +224,17 @@ def get_ordering(ife_list, distances, coord_data):
                 coord_ordered.append(val)
 
     return ifes_ordered, coord_ordered
+
+
+def reorder_core(ifes_ordered, core_data):
+    coord_core_ordered = []
+    # append the coordinates based on new ordering
+    for index in ifes_ordered:
+        for key, val in core_data.iteritems():
+            if index[1] == key:
+                coord_core_ordered.append(val)
+
+    return coord_core_ordered
 
 
 def build_heatmap_data(distances, ifes_ordered):
