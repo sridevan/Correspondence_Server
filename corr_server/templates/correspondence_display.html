@@ -184,7 +184,7 @@
               <tbody>
               {% for k,v in pw_info.items() %}
                 <tr>
-                  <td><input type='checkbox' id='{{loop.index0}}' class='jmolInline' data-coord = '{{coord[loop.index0]}}' data-quality = '{{coord[loop_index0]}}'>{{loop.index0 + 1}}</td>
+                  <td><input type='checkbox' id='{{loop.index0}}' class='jmolInline' data-coord = '{{coord[loop.index0]}}' data-core = '{{coord_core[loop.index0]}}' data-quality = '{{coord[loop.index0]}}'>{{loop.index0 + 1}}</td>
                   <td>{{ ifes[loop.index0][1] }}</td>
                   <td>{{ reported_head[loop.index0] }}</td>
                   <td>{{ calculated_head[loop.index0] }}</td>
