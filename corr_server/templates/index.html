@@ -37,10 +37,19 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     -->
-    <form id="generateCorrespondence" action="/correspondence/geometric/" >
+    <form id="generateCorrespondence" action="/correspondence/" >
         <div class="form-group">
-        <label for="exampleFormControlInput1">Enter the query selection</label>
-        <input type="text" class="form-control" id="selection" placeholder="This could be a loop id or a sequence of residue number separated by commas ">
+            <label for="ife">Enter the Query IFE</label>
+            <input type="text" class="form-control" id="ife" placeholder="Enter the query ife ">
+            <label for="selection">Enter the Query Selection</label>
+            <input type="text" class="form-control" id="selection" placeholder="This could be a loop id or a sequence of residue number separated by commas ">
+            <label for="method">Choose Discrepancy calculation method</label>
+            <select class="form-control" id="method">
+                <option value="geometric" selected>geometric</option>
+                <option value="relative">relative</option>
+            </select>
+            <label for="core" style="display: none;">Enter the core nucleotides for alignment</label>
+            <input type="text" class="form-control" id="core" style="display: none;" placeholder="Enter the core nts ">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -48,9 +57,31 @@
 </body>
 </html>
 <script>
+
+        $('#method').change(function() {
+            let selected = $(this).val();
+            if(selected == 'relative'){
+                $('#core').show();
+                $('label[for="core"]').show();
+            }
+            else{
+                $('#core').hide();
+                $('label[for="core"]').hide();
+            }
+        });
+
         $('#generateCorrespondence').on('submit', function() {
             let id = $('#selection').val();
-            let formAction = $('#generateCorrespondence').attr('action');
-            $('#generateCorrespondence').attr('action', formAction + id);
+            let ife = $('#ife').val();
+            let method = $('#method').val();
+            let core = $('#core').val();
+            if (method == 'geometric') {
+                let formAction = $('#generateCorrespondence').attr('action');
+                $('#generateCorrespondence').attr('action', formAction + method + '/' + ife + '/' + id);
+            } else {
+                let formAction = $('#generateCorrespondence').attr('action');
+                $('#generateCorrespondence').attr('action', formAction + method + '/' + ife + '/' + id + '/' + core);
+            }
         });
+
 </script>
