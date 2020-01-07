@@ -128,6 +128,27 @@ def build_coord(corr_list):
     return ife_list, ife_coord
 
 
+def build_coord_relative(core_list, corr_list):
+    # Create list of IFES
+    ife_list = []
+    for sublist in core_list:
+        ife = '|'.join(sublist[0].split('|')[:3])
+        ife_list.append(ife)
+
+    combined_units = merge_list(core_list, corr_list)
+
+    # Create list of coordinates as strings
+    coord_unordered = []
+    for x in combined_units:
+        x = ','.join(x)
+        coord_unordered.append(x)
+
+    # Create a dictionary of ifes with coordinate data
+    ife_coord = dict(zip(ife_list, coord_unordered))
+
+    return ife_list, ife_coord
+
+
 def build_coord_core(ife_list, core_list):
     # Create list of coordinates as strings
     coord_unordered = []
