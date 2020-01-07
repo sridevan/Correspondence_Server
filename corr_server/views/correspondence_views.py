@@ -43,7 +43,7 @@ def correspondence_geometric(method, ife, selection, core):
         # Reorder the pairwise annotation based on the new ordering
         pw_info_ordered = ui.reorder_pw(ifes_ordered, pw_info)
         return render_template("correspondence_display.html", query_nts=query_units,
-                               coord=coord_ordered, ifes=ifes_ordered, maxDisc=max_disc, p2=percentile,
+                               coord=coord_ordered, coord_core=None, ifes=ifes_ordered, maxDisc=max_disc, p2=percentile,
                                data=heatmap_data, trna_occupancy=trna_occupancy, functional_state=functional_state,
                                factors_bound=factors_bound, reported_rotation=reported_intersubunit,
                                calculated_rotation=calculated_intersubunit, reported_head=reported_head,
@@ -61,9 +61,7 @@ def correspondence_geometric(method, ife, selection, core):
         corr_complete, corr_std = cs.get_correspondence(query_units, ec_members)
         # Get correspondence for the core nts
         core_complete = cs.get_correspondence_core(core_units, ec_members)
-        ife_list, coord_data = ui.build_coord(corr_complete)
-        # Build a dictionary of ifes with coord data for the core nts
-        coord_core_data = ui.build_coord_core(ife_list, core_complete)
+        ife_list, coord_data = ui.build_coord_relative(core_complete, corr_complete)
         # Merge the correspondence between core nts and query nts
         corr_complete = ui.merge_list(core_complete, corr_std)
         # Get the pairwise annotation for the instances in the EC
@@ -74,8 +72,6 @@ def correspondence_geometric(method, ife, selection, core):
         discrepancy_data = ui.calculate_relative_disc(ife_list, center_data, len(core_units), len(query_units))
         # Order the instances by similarity
         ifes_ordered, coord_ordered = ui.get_ordering(ife_list, discrepancy_data, coord_data)
-        # Reorder the core residues according to the new order
-        coord_core_ordered = ui.reorder_core(ifes_ordered, coord_core_data)
         # Get discrepancy statistics and build the heatmap data for display
         max_disc, percentile, heatmap_data = ui.build_heatmap_data(discrepancy_data, ifes_ordered)
         # Get all the annotation from the definition file
@@ -84,12 +80,13 @@ def correspondence_geometric(method, ife, selection, core):
         # Reorder the pairwise annotation based on the new ordering
         pw_info_ordered = ui.reorder_pw(ifes_ordered, pw_info)
         return render_template("correspondence_display.html", query_nts=query_units,
-                               coord=coord_ordered, coord_core=coord_core_ordered, ifes=ifes_ordered, maxDisc=max_disc,
+                               coord=coord_ordered, ifes=ifes_ordered, maxDisc=max_disc,
                                p2=percentile, data=heatmap_data, trna_occupancy=trna_occupancy,
                                functional_state=functional_state,  factors_bound=factors_bound,
                                reported_rotation=reported_intersubunit, calculated_rotation=calculated_intersubunit,
                                reported_head=reported_head, calculated_head=calculated_head,
                                antibiotic_bound=antibiotic_bound, pw_info=pw_info_ordered, pw_list=pw_sorted)
+
 
 
 """
