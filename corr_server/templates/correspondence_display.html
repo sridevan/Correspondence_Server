@@ -9,9 +9,15 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
   <!--<script src="http://rna.bgsu.edu/rna3dhub/js/jsmol/JSmol.min.nojq.js"></script>
-  <script src="http://rna.bgsu.edu/rna3dhub/js/jquery.jmolTools.js"></script>-->
+    <script src="http://rna.bgsu.edu/rna3dhub/js/jquery.jmolTools.js"></script>-->
   <script src="/static/js/jsmol/JSmol.min.nojq.js"></script>
-  <script src="/static/js/jquery.jmolTools.js"></script>
+  {% if coord_core == None  %}
+    <script src="/static/js/jquery.jmolTools.js"></script>
+  {% elif coord_core != None  %}
+    <script src="/static/js/jquery.jmolToolsrelative.js"></script>
+  {% endif %}
+
+
   <script src="//d3js.org/d3.v4.min.js"></script>
   <style>
     /* Remove the navbar's default margin-bottom and rounded borders */ 
@@ -78,7 +84,7 @@
               color: "white",
               addSelectionOptions: false,
               use: "HTML5",
-              //j2sPath: "http://rna.bgsu.edu/rna3dhub/js/jsmol/j2s/",
+              // j2sPath: "http://rna.bgsu.edu/rna3dhub/js/jsmol/j2s/",
               j2sPath: "/static/js/jsmol/j2s",
               readyFunction: jmol_isReady,
               //script: script,
@@ -116,11 +122,11 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="#">Correspondence Server</a>
+      <a class="navbar-brand" href="http://127.0.0.1:5000/">Correspondence Server</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
+        <li class="active"><a href="http://127.0.0.1:5000/">Home</a></li>
         <li><a href="#">About</a></li>
         <li><a href="#">Contact Us</a></li>
       </ul>
@@ -150,10 +156,10 @@
                     
                             
                             <dt>Equivalence Class:</dt>
-                              <dd id="common_name" class="edit"><a href="http://rna.bgsu.edu/rna3dhub/nrlist/view/{{ ec }}" target="_blank">{{ ec }}</a></dd>
+                              <dd id="common_name" class="edit"><a href="http://rna.bgsu.edu/rna3dhub/nrlist/view/{{ ec_id }}" target="_blank">{{ ec_id }}</a></dd>
                                                         
                             <dt>NR Release</dt>
-                              <dd id="common_name" class="edit"><a href="http://rna.bgsu.edu/rna3dhub/nrlist/release/{{ release }}" target="_blank">{{ release }}</a></dd>
+                              <dd id="common_name" class="edit"><a href="http://rna.bgsu.edu/rna3dhub/nrlist/release/{{ nr_release_id }}" target="_blank">{{ release_id }}</a></dd>
                             
                         </dl>
       </div>
@@ -184,9 +190,12 @@
               <tbody>
               {% for k,v in pw_info.items() %}
                 <tr>
-                  <td><input type='checkbox' id='{{loop.index0}}' class='jmolInline' data-coord = '{{coord[loop.index0]}}' data-core = '{{coord_core[loop.index0]}}' data-quality = '{{coord[loop.index0]}}'>{{loop.index0 + 1}}</td>
-                  <td>{{ ifes[loop.index0][1] }}</td>
-                  <td>{{ reported_head[loop.index0] }}</td>
+                  {% if coord_core == None  %}
+                    <td><input type='checkbox' id='{{loop.index0}}' class='jmolInline' data-coord = '{{coord[loop.index0]}}' data-quality = '{{coord[loop.index0]}}'>{{loop.index0 + 1}}</td><td>{{ ifes[loop.index0][1] }}</td>
+                  {% elif coord_core != None  %}
+                    <td><input type='checkbox' id='{{loop.index0}}' class='jmolInline' data-core = '{{coord[loop.index0]}}' data-quality = '{{coord[loop.index0]}}'>{{loop.index0 + 1}}</td><td>{{ ifes[loop.index0][1] }}</td>
+                  {% endif %}
+                    <td>{{ reported_head[loop.index0] }}</td>
                   <td>{{ calculated_head[loop.index0] }}</td>
                   <td>{{ reported_rotation[loop.index0] }}</td>
                   <td>{{ calculated_rotation[loop.index0] }}</td>
