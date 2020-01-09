@@ -18,6 +18,11 @@ def get_ec_members(query_ife):
     for row in members_query:
         ec_members.append(row.ife_id)
 
+    ec_query = NrClasses.query.filter_by(nr_class_id=class_id)
+    for row in ec_query:
+        equivalence_class = row.name
+        nr_release = row.nr_release_id
+
     rejected_members, cleaned_ec_members = reject_ife(ec_members, REJECT_LIST)
 
     members_pdb = []
@@ -29,4 +34,4 @@ def get_ec_members(query_ife):
 
     members_info = zip(members_pdb, members_chain)
 
-    return rejected_members, members_info
+    return rejected_members, members_info, equivalence_class, nr_release
