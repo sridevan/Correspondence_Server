@@ -117,7 +117,7 @@ def get_query_units(query_type, query_list, query_ife):
         incomplete_units = []
         for unit in query_list:
             incomplete_units.append(unit[0])
-            query_units = get_complete_units(incomplete_units)
+            query_units = get_complete_units(incomplete_units, query_ife)
             # query_ife = '|'.join(query_units[0].split('|')[:3])
 
 
