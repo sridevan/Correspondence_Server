@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-conn_str = 'mysql+pymysql://root:root@127.0.0.1/rna3dhub?' \
+conn_str = 'mysql+pymysql://root:root@127.0.0.1/rna3dhub-next?' \
            'unix_socket=/Applications/MAMP/tmp/mysql/mysql.sock'
 
 print "Connecting to DB with {}".format(conn_str)
