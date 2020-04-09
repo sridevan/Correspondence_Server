@@ -23,7 +23,7 @@ def get_correspondence(query_units, members_list):
     corr_filtered = check_insertion(corr_units)
     corr_grouped = group_corr(corr_filtered)
     corr_grouped = [x for x in corr_grouped if len(x) == len(query_units)]
-    corr_grouped = sort_sublist(corr_grouped)
+    corr_grouped, prob_list = sort_sublist(corr_grouped)
     corr_grouped.append(query_units)
     corr_complete = corr_grouped
     corr_std = check_modifications(corr_complete)
@@ -51,8 +51,10 @@ def get_correspondence_core(core_units, members_list):
     core_filtered = check_insertion(corr_units)
     core_grouped = group_corr(core_filtered)
     core_grouped = [x for x in core_grouped if len(x) == len(core_units)]
-    core_grouped = sort_sublist(core_grouped)
+
+    core_grouped, prob_list = sort_sublist(core_grouped)
     core_units = sort_list(core_units)
+
     core_grouped.append(core_units)
     core_complete = core_grouped
 
