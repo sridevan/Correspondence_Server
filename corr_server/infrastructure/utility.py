@@ -1,7 +1,7 @@
 from itertools import groupby, islice
 from copy import deepcopy
 from collections import defaultdict, OrderedDict
-from definitions import ribosome_subunits, rotation_data, rotation_head, annotation, annotation_LSU
+from definitions import ribosome_subunits, rotation_data, annotation_data
 from discrepancy import matrix_discrepancy, relative_discrepancy
 from ordering import optimalLeafOrder
 import numpy as np
@@ -81,11 +81,16 @@ def sort_list(single_list):
 
 def sort_sublist(corr_list):
     sorted_list = []
+    prob_list = []
     for sublist in corr_list:
-        b = sorted(sublist, key=lambda x: int(x.split('|')[-1]))
-        sorted_list.append(b)
+        try:
+            b = sorted(sublist, key=lambda x: int(x.split('|')[-1]))
+            sorted_list.append(b)
+        except:
+            prob_list.append(sublist)
+            continue
 
-    return sorted_list
+    return sorted_list, prob_list
 
 
 def check_modifications(corr_complete):
@@ -247,6 +252,35 @@ def get_ordering(ife_list, distances, coord_data):
     return ifes_ordered, coord_ordered
 
 
+def get_ordering_manual(ife_list, coord_data, default_ordering):
+    # Get the default ordering for the ife in the list
+    chain_order = []
+    for chain in ife_list:
+        for elem in default_ordering:
+            if chain == elem[1]:
+                chain_order.append(int(elem[0]))
+
+    # Build a list of tuple pairs with the ife list and default ordering
+    ife_unordered = zip(chain_order, ife_list)
+    # Reorder the tuple pairs based on ordering
+    ife_reordered = sorted(ife_unordered, key=lambda x: x[0])
+    # Build a list of reordered ifes
+    chain_reordered = [elem[1] for elem in ife_reordered]
+    # Build a new and continuous ordering list starting from zero
+    new_order = [idx for idx, chain in enumerate(chain_reordered)]
+    # Build a list of tuple pairs containing the new ordering list and the reordered ife list
+    ifes_ordered = zip(new_order, chain_reordered)
+
+    coord_ordered = []
+    # append the coordinates based on new ordering
+    for index in ifes_ordered:
+        for key, val in coord_data.iteritems():
+            if index[1] == key:
+                coord_ordered.append(val)
+
+    return ifes_ordered, coord_ordered
+
+
 def reorder_core(ifes_ordered, core_data):
     coord_core_ordered = []
     # append the coordinates based on new ordering
@@ -359,6 +393,43 @@ def get_annotation_double(ifes_ordered):
 
     return trna_occupancy, functional_state, factors_bound, antibiotic_bound, reported_intersubunit, \
            calculated_intersubunit, reported_head, calculated_head
+
+
+def get_annotation_new(ifes_ordered):
+    trna_occupancy = []
+    functional_state = []
+    factors_bound = []
+    antibiotic_bound = []
+    reported_head = []
+    calculated_head = []
+    reported_intersubunit = []
+    calculated_intersubunit = []
+    description = []
+    structure_method = []
+    structure_resolution = []
+    principal_investigator = []
+    publication_year = []
+
+    for ife1 in ifes_ordered:
+        for ife2 in annotation_data:
+            if ife1[1] == ife2[0] or ife1[1] == ife2[1]:
+                trna_occupancy.append(ife2[11])
+                functional_state.append(ife2[12])
+                factors_bound.append(ife2[13])
+                antibiotic_bound.append(ife2[14])
+                reported_head.append(ife2[2])
+                calculated_head.append(ife2[3])
+                reported_intersubunit.append(ife2[4])
+                calculated_intersubunit.append(ife2[5])
+                description.append(ife2[6])
+                structure_method.append(ife2[7])
+                structure_resolution.append(ife2[8])
+                principal_investigator.append(ife2[9])
+                publication_year.append(ife2[10])
+
+    return trna_occupancy, functional_state, factors_bound, antibiotic_bound, reported_intersubunit, \
+           calculated_intersubunit, reported_head, calculated_head, description, structure_method, \
+           structure_resolution, principal_investigator, publication_year
 
 
 def reorder_pw(ifes_ordered, pw_info):
