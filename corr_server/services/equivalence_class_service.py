@@ -1,9 +1,16 @@
 from data.models import NrClasses, NrChains, NrReleases
 from infrastructure.utility import reject_ife
 
-REJECT_LIST = ['5AFI|1|a', '5LZE|1|A', '5LZA|1|a', '5WFK|1|a', '4WRO|1|3L', '4WSD|1|1K', '4WSD|1|1L', '4WSD|1|3L', '4WT1|1|1K', '4WT1|1|1L',
-               '5U4J|1|a', '4WT1|1|3K', '4WT1|1|3L', '4WZO|1|3K', '4WZO|1|3L', '4Y4P|1|1w', '3R8N|1|A', '3R8O|1|A',
-               '4V80|1|CA', '4V80|1|AA']
+REJECT_LIST = ['5AFI|1|a', '5LZE|1|A', '5LZA|1|a', '5WFK|1|a', '4WRO|1|3L', '4WSD|1|1K', '4WSD|1|1L', '4WSD|1|3L',
+               '4WT1|1|1K', '4WT1|1|1L', '5U4J|1|a', '4WT1|1|3K', '4WT1|1|3L', '4WZO|1|3K', '4WZO|1|3L', '4Y4P|1|1w',
+               '3R8N|1|A', '3R8O|1|A', '4V80|1|CA', '4V80|1|AA', '6TC3|1|16S1', '6TBV|1|16S1', '6I7V|1|BA', '5LZA|1|A',
+               '3J7Z|1|A', '4UY8|1|A', '4V80|1|BA', '4V80|1|DA', '5GAD|1|A', '5GAE|1|A', '5GAG|1|A', '5GAH|1|A',
+               '6GBZ|1|A', '6GC0|1|A', '6GC8|1|A', '6HRM|1|1', '6I0Y|1|A', '6QUL|1|A', '6S0K|1|A', '6TBV|1|23S1',
+               '6TC3|1|23S1', '6U48|1|CA', '5NWY|1|N', '6C4H|1|A']
+
+REJECT_LSU = ['3J7Z|1|A', '4UY8|1|A', '4V80|1|BA', '4V80|1|DA', '5GAD|1|A', '5GAE|1|A', '5GAG|1|A', '5GAH|1|A',
+              '6GBZ|1|A', '6GC0|1|A', '6GC8|1|A', '6HRM|1|1', '6I0Y|1|A', '6QUL|1|A', '6S0K|1|A', '6TBV|1|23S1',
+              '6TC3|1|23S1', '6U48|1|CA']
 
 
 def get_ec_members(query_ife):
