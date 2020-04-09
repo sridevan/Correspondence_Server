@@ -38,6 +38,76 @@ ife_empty = [('4V4Q', 'AA'), ('4V4Q', 'CA'), ('4V5B', 'BA'), ('4V5B', 'DA'),
              ('4V7U', 'AA'), ('4V7U', 'CA'), ('4V7V', 'AA'), ('4V7V', 'CA'), ('4WF1', 'AA'), ('4WF1', 'CA'),
              ('4WWW', 'QA'), ('4WWW', 'XA'), ('4V6C', 'AA'), ('4V6C', 'CA')]
 
+default_ordering = [('0', '5AFI|1|a'), ('1', '5UYM|1|A'), ('2', '5LZD|1|a'), ('3', '5WDT|1|a'), ('4', '5WE4|1|a'),
+                    ('5', '5WE6|1|a'), ('6', '3JCE|1|a'), ('7', '5WFS|1|a'), ('8', '6ENJ|1|a'), ('9', '6BU8|1|A'),
+                    ('10', '4V6E|1|AA'), ('11', '5UYQ|1|A'), ('12', '4WOI|1|DA'), ('13', '5KPX|1|26'),
+                    ('14', '4V9C|1|AA'), ('15', '5O2R|1|a'), ('16', '6DNC|1|A'), ('17', '4V6D|1|AA'),
+                    ('18', '4V9D|1|BA'), ('19', '6H4N|1|a'), ('20', '5JTE|1|AA'), ('21', '5WFK|1|a'),
+                    ('22', '6ENU|1|a'), ('23', '6GWT|1|a'), ('24', '5KCR|1|1a'), ('25', '5WF0|1|a'),
+                    ('26', '5JU8|1|AA'), ('27', '5LZA|1|a'), ('28', '3JCD|1|a'), ('29', '5U9F|1|A'),
+                    ('30', '6ENF|1|a'), ('31', '5MDZ|1|2'), ('32', '5NWY|1|0'), ('33', '5MDV|1|2'),
+                    ('34', '3JBU|1|A'), ('35', '5UYK|1|A'), ('36', '5U4I|1|a'), ('37', '5UYL|1|A'), ('38', '5MGP|1|a'),
+                    ('39', '5U9G|1|A'), ('40', '5MDW|1|2'), ('41', '5UYN|1|A'), ('42', '5KPS|1|27'),
+                    ('43', '5IQR|1|2'), ('44', '6C4I|1|a'), ('45', '5KPW|1|26'), ('46', '3J9Z|1|SA'),
+                    ('47', '5NP6|1|D'), ('48', '5H5U|1|h'), ('49', '5UYP|1|A'), ('50', '6GXM|1|a'), ('51', '4WOI|1|AA'),
+                    ('52', '5MDY|1|2'), ('53', '5L3P|1|a'), ('54', '4V9C|1|CA'), ('55', '5KCS|1|1a'),
+                    ('56', '3J9Y|1|a'), ('57', '6GXN|1|a'), ('58', '4V6E|1|CA'), ('59', '4V50|1|CA'),
+                    ('60', '4V50|1|AA'), ('61', '4V6D|1|CA'), ('62', '3JCJ|1|g'), ('63', '4V9D|1|AA'),
+                    ('64', '6GXO|1|a'), ('65', '3JA1|1|SA'), ('66', '4V9O|1|BA'), ('67', '3JBV|1|A'),
+                    ('68', '4V5B|1|BA'), ('69', '4V9O|1|FA'), ('70', '6I7V|1|BA'), ('71', '4WF1|1|CA'),
+                    ('72', '4V56|1|AA'), ('73', '4V55|1|AA'), ('74', '4U1U|1|CA'), ('75', '4V64|1|AA'),
+                    ('76', '4V57|1|AA'), ('77', '4U20|1|CA'), ('78', '4U27|1|CA'), ('79', '4U25|1|CA'),
+                    ('80', '4V4H|1|AA'), ('81', '4V53|1|AA'), ('82', '4V4Q|1|AA'), ('83', '4U1V|1|CA'),
+                    ('84', '4V54|1|AA'), ('85', '4V52|1|AA'), ('86', '4U26|1|CA'), ('87', '4U24|1|CA'),
+                    ('88', '5JC9|1|BA'), ('89', '4V9O|1|DA'), ('90', '4YBB|1|BA'), ('91', '4V6C|1|CA'),
+                    ('92', '5J8A|1|BA'), ('93', '4V7U|1|CA'), ('94', '5J5B|1|BA'), ('95', '5J91|1|BA'),
+                    ('96', '5J7L|1|BA'), ('97', '5IT8|1|BA'), ('98', '4V7S|1|CA'), ('99', '4V7V|1|CA'),
+                    ('100', '4V7T|1|CA'), ('101', '5J88|1|BA'), ('102', '4WWW|1|XA'), ('103', '4V9P|1|BA'),
+                    ('104', '4V9P|1|DA'), ('105', '4U1V|1|AA'), ('106', '4WF1|1|AA'), ('107', '4U20|1|AA'),
+                    ('108', '4U27|1|AA'), ('109', '4V7V|1|AA'), ('110', '4U1U|1|AA'), ('111', '4V7U|1|AA'),
+                    ('112', '4V7S|1|AA'), ('113', '4U25|1|AA'), ('114', '4V7T|1|AA'), ('115', '4U24|1|AA'),
+                    ('116', '5J7L|1|AA'), ('117', '5J91|1|AA'), ('118', '5J5B|1|AA'), ('119', '4V6C|1|AA'),
+                    ('120', '4YBB|1|AA'), ('121', '5J8A|1|AA'), ('122', '4WWW|1|QA'), ('123', '5J88|1|AA'),
+                    ('124', '5IT8|1|AA'), ('125', '6I7V|1|AA'), ('126', '4U26|1|AA'), ('127', '4V9P|1|HA'),
+                    ('128', '5JC9|1|AA'), ('129', '4V9P|1|FA'), ('130', '4V9O|1|HA'), ('131', '4V56|1|CA'),
+                    ('132', '4V57|1|CA'), ('133', '4V89|1|AA'), ('134', '4V5B|1|DA'), ('135', '4V55|1|CA'),
+                    ('136', '4V64|1|CA'), ('137', '4V53|1|CA'), ('138', '4V54|1|CA'), ('139', '4V52|1|CA'),
+                    ('140', '4V85|1|AA'), ('141', '4V4H|1|CA'), ('142', '4V4Q|1|CA')]
+
+new_ordering = [('0', '4V4Q|1|CA'), ('1', '4V4H|1|CA'), ('2', '4V53|1|CA'), ('3', '4V52|1|CA'), ('4', '4V54|1|CA'),
+                ('5', '4V64|1|CA'), ('6', '4V55|1|CA'), ('7', '4V57|1|CA'), ('8', '4V5B|1|DA'), ('9', '4V56|1|CA'),
+                ('10', '4V9P|1|HA'), ('11', '4V9P|1|FA'), ('12', '4V85|1|AA'), ('13', '4V9O|1|HA'),
+                ('14', '4V89|1|AA'), ('15', '4V55|1|AA'), ('16', '4V57|1|AA'), ('17', '4V53|1|AA'),
+                ('18', '4V54|1|AA'), ('19', '4V52|1|AA'), ('20', '4V4Q|1|AA'), ('21', '4V4H|1|AA'),
+                ('22', '4V64|1|AA'), ('23', '4V56|1|AA'), ('24', '4V9P|1|BA'), ('25', '4V7V|1|AA'),
+                ('26', '4V7S|1|AA'), ('27', '4V7U|1|AA'), ('28', '4V6C|1|AA'), ('29', '4V7T|1|AA'),
+                ('30', '4WWW|1|QA'), ('31', '5IT8|1|AA'), ('32', '5JC9|1|AA'), ('33', '4U26|1|AA'),
+                ('34', '4U24|1|AA'), ('35', '5J7L|1|AA'), ('36', '5J5B|1|AA'), ('37', '5J91|1|AA'),
+                ('38', '5J8A|1|AA'), ('39', '5J88|1|AA'), ('40', '4YBB|1|AA'), ('41', '4V9P|1|DA'),
+                ('42', '4U25|1|AA'), ('43', '4U27|1|AA'), ('44', '4V7U|1|CA'), ('45', '4V7T|1|CA'),
+                ('46', '4V6C|1|CA'), ('47', '4V7S|1|CA'), ('48', '4WWW|1|XA'), ('49', '4V7V|1|CA'),
+                ('50', '4V5B|1|BA'), ('51', '3JBV|1|A'), ('52', '4V9O|1|DA'), ('53', '4WF1|1|AA'),
+                ('54', '4U1U|1|AA'), ('55', '4U1V|1|AA'), ('56', '4U20|1|AA'), ('57', '3JA1|1|SA'),
+                ('58', '4V9O|1|FA'), ('59', '4V50|1|AA'), ('60', '4V50|1|CA'), ('61', '5J7L|1|BA'),
+                ('62', '5J5B|1|BA'), ('63', '5J91|1|BA'), ('64', '5IT8|1|BA'), ('65', '5J88|1|BA'),
+                ('66', '5J8A|1|BA'), ('67', '5JC9|1|BA'), ('68', '4YBB|1|BA'), ('69', '4U26|1|CA'),
+                ('70', '4U24|1|CA'), ('71', '4V6D|1|CA'), ('72', '5H5U|1|h'), ('73', '4V9O|1|BA'),
+                ('74', '3JBU|1|A'), ('75', '5NP6|1|D'), ('76', '3JCD|1|a'), ('77', '6C4I|1|a'),
+                ('78', '3J9Z|1|SA'), ('79', '5MGP|1|a'), ('80', '5MDZ|1|2'), ('81', '5MDV|1|2'),
+                ('82', '5MDW|1|2'), ('83', '5MDY|1|2'), ('84', '6ENF|1|a'), ('85', '5U9F|1|A'),
+                ('86', '4V9D|1|AA'), ('87', '5UYL|1|A'), ('88', '4U1U|1|CA'), ('89', '4U20|1|CA'),
+                ('90', '4U1V|1|CA'), ('91', '4WF1|1|CA'), ('92', '5UYN|1|A'), ('93', '5UYP|1|A'),
+                ('94', '5UYK|1|A'), ('95', '4U25|1|CA'), ('96', '4U27|1|CA'), ('97', '5U9G|1|A'),
+                ('98', '6ENU|1|a'), ('99', '5KPS|1|27'), ('100', '5U4I|1|a'), ('101', '5KPW|1|26'),
+                ('102', '5L3P|1|a'), ('103', '5IQR|1|2'), ('104', '4V6E|1|CA'), ('105', '5NWY|1|0'),
+                ('106', '5O2R|1|a'), ('107', '6DNC|1|A'), ('108', '3J9Y|1|a'), ('109', '3JCJ|1|g'),
+                ('110', '5KCS|1|1a'), ('111', '5WF0|1|a'), ('112', '5KCR|1|1a'), ('113', '5UYQ|1|A'),
+                ('114', '4V6E|1|AA'), ('115', '5JU8|1|AA'), ('116', '4V9D|1|BA'), ('117', '4WOI|1|AA'),
+                ('118', '4V9C|1|CA'), ('119', '4V6D|1|AA'), ('120', '5WFS|1|a'), ('121', '5WE4|1|a'),
+                ('122', '5WDT|1|a'), ('123', '5UYM|1|A'), ('124', '6BU8|1|A'), ('125', '6ENJ|1|a'),
+                ('126', '5LZD|1|a'), ('127', '5KPX|1|26'), ('128', '5JTE|1|AA'), ('129', '4WOI|1|DA'),
+                ('130', '5WE6|1|a'), ('131', '3JCE|1|a'), ('132', '4V9C|1|AA')]
+
 
 @blueprint.route('/correspondence/<method>/<ife>/<selection>', defaults={'core': None})
 @blueprint.route('/correspondence/<method>/<ife>/<selection>/<core>')
@@ -49,8 +119,8 @@ def correspondence_geometric(method, ife, selection, core):
         query_type = pi.check_query(query_list)
         query_units = qs.get_query_units(query_type, query_list, query_ife)
         rejected_members, ec_members, ec_id, nr_release = em.get_ec_members(query_ife)
-        corr_complete, corr_std = cs.get_correspondence(query_units, ife_trna)
-        ife_list, coord_data = ui.build_coord(corr_std)
+        corr_complete, corr_std = cs.get_correspondence(query_units, ec_members)
+        ife_list, coord_data = ui.build_coord(corr_complete)
         # Get the pairwise annotation for the instances in the EC
         pw_info, pw_sorted = ps.get_pairwise_annotation(corr_complete, query_units, ife_list)
         # Get the rotation data for calculating discrepancy
@@ -61,11 +131,14 @@ def correspondence_geometric(method, ife, selection, core):
         discrepancy_data = ui.calculate_geometric_disc(ife_list, rotation_data, center_data)
         # Order the instances by similarity
         ifes_ordered, coord_ordered = ui.get_ordering(ife_list, discrepancy_data, coord_data)
+        # ifes_ordered, coord_ordered = ui.get_ordering_manual(ife_list, coord_data, new_ordering)
         # Get discrepancy statistics and build the heatmap data for display
         max_disc, percentile, heatmap_data = ui.build_heatmap_data(discrepancy_data, ifes_ordered)
         # Get all the annotation from the definition file
         trna_occupancy, functional_state, factors_bound, antibiotic_bound, reported_intersubunit, \
-        calculated_intersubunit, reported_head, calculated_head = ui.get_annotation(ifes_ordered)
+        calculated_intersubunit, reported_head, calculated_head, description, \
+        structure_method, structure_resolution, principal_investigator, \
+        publication_year = ui.get_annotation_new(ifes_ordered)
         # Reorder the pairwise annotation based on the new ordering
         pw_info_ordered = ui.reorder_pw(ifes_ordered, pw_info)
         return render_template("correspondence_display.html", query_nts=query_units,
@@ -74,7 +147,10 @@ def correspondence_geometric(method, ife, selection, core):
                                factors_bound=factors_bound, reported_rotation=reported_intersubunit,
                                calculated_rotation=calculated_intersubunit, reported_head=reported_head,
                                calculated_head=calculated_head, antibiotic_bound=antibiotic_bound,
-                               pw_info=pw_info_ordered, pw_list=pw_sorted, release_id=nr_release, ec_id=ec_id)
+                               description=description, structure_method=structure_method,
+                               structure_resolution=structure_resolution, principal_investigator=principal_investigator,
+                               publication_year=publication_year, pw_info=pw_info_ordered, pw_list=pw_sorted,
+                               release_id=nr_release, ec_id=ec_id)
     elif method == 'relative' and core is not None:
         query_ife = ife
         query_list = pi.input_type(selection)
@@ -83,6 +159,8 @@ def correspondence_geometric(method, ife, selection, core):
         query_units = qs.get_query_units(query_type, query_list, query_ife)
         core_units = qs.get_complete_units(core_selection, query_ife)
         rejected_members, ec_members, ec_id, nr_release = em.get_ec_members(query_ife)
+        # Get correspondence for the query nts
+        corr_complete, corr_std = cs.get_correspondence(query_units, ec_members)
         # Get correspondence for the query nts
         corr_complete, corr_std = cs.get_correspondence(query_units, ec_members)
         # Get correspondence for the core nts
@@ -100,58 +178,34 @@ def correspondence_geometric(method, ife, selection, core):
         ifes_ordered, coord_ordered = ui.get_ordering(ife_list, discrepancy_data, coord_data)
         # Get discrepancy statistics and build the heatmap data for display
         max_disc, percentile, heatmap_data = ui.build_heatmap_data(discrepancy_data, ifes_ordered)
+        '''
         # Get all the annotation from the definition file
         trna_occupancy, functional_state, factors_bound, antibiotic_bound, reported_intersubunit, \
         calculated_intersubunit, reported_head, calculated_head = ui.get_annotation(ifes_ordered)
+        '''
+        # Get all the annotation from the definition file
+        trna_occupancy, functional_state, factors_bound, antibiotic_bound, reported_intersubunit, \
+        calculated_intersubunit, reported_head, calculated_head, description, \
+        structure_method, structure_resolution, principal_investigator, \
+        publication_year = ui.get_annotation_new(ifes_ordered)
         # Reorder the pairwise annotation based on the new ordering
         pw_info_ordered = ui.reorder_pw(ifes_ordered, pw_info)
+        '''
         return render_template("correspondence_display.html", query_nts=query_units,
                                coord=coord_ordered, ifes=ifes_ordered, maxDisc=max_disc,
                                p2=percentile, data=heatmap_data, trna_occupancy=trna_occupancy,
-                               functional_state=functional_state,  factors_bound=factors_bound,
+                               functional_state=functional_state, factors_bound=factors_bound,
                                reported_rotation=reported_intersubunit, calculated_rotation=calculated_intersubunit,
                                reported_head=reported_head, calculated_head=calculated_head,
                                antibiotic_bound=antibiotic_bound, pw_info=pw_info_ordered, pw_list=pw_sorted)
-
-
-
-"""
-@blueprint.route('/correspondence/relative/<ife>/<core>/<selection>')
-def correspondence_geometric(method, ife, core, selection):
-    query_list = pi.input_type(selection)
-    query_type = pi.check_query(query_list)
-    query_units, query_ife = qs.get_query_units_relative(query_type, query_list)
-    core_units, query_units = ui.partition_list(query_units)
-    rejected_members, ec_members = em.get_ec_members(query_ife)
-    # Get correspondence for the query nts
-    corr_complete, corr_std = cs.get_correspondence(query_units, ec_members)
-    # Get correspondence for the core nts
-    core_complete = cs.get_correspondence_core(core_units, ec_members)
-    ife_list, coord_data = ui.build_coord(corr_complete)
-    # Merge the correspondence between core nts and query nts
-    corr_complete = ui.merge_list(core_complete, corr_complete)
-    # Get the pairwise annotation for the instances in the EC
-    pw_info, pw_sorted = ps.get_pairwise_annotation(corr_std, query_units, ife_list)
-    # Get the center data for calculating discrepancy
-    center_data = ccs.get_center(corr_complete)
-    # Calculate discrepancy using the geometric method
-    discrepancy_data = ui.calculate_relative_disc(ife_list, center_data, len(core_units), len(query_units))
-    # Order the instances by similarity
-    ifes_ordered, coord_ordered = ui.get_ordering(ife_list, discrepancy_data, coord_data)
-    # Get discrepancy statistics and build the heatmap data for display
-    max_disc, percentile, heatmap_data = ui.build_heatmap_data(discrepancy_data, ifes_ordered)
-    # Get all the annotation from the definition file
-    trna_occupancy, functional_state, factors_bound, antibiotic_bound, reported_intersubunit, \
-    calculated_intersubunit, reported_head, calculated_head = ui.get_annotation(ifes_ordered)
-    # Reorder the pairwise annotation based on the new ordering
-    pw_info_ordered = ui.reorder_pw(ifes_ordered, pw_info)
-    return render_template("correspondence_display.html", query_nts=query_units,
-                           coord=coord_ordered, ifes=ifes_ordered, maxDisc=max_disc, p2=percentile,
-                           data=heatmap_data, trna_occupancy=trna_occupancy, functional_state=functional_state,
-                           factors_bound=factors_bound, reported_rotation=reported_intersubunit,
-                           calculated_rotation=calculated_intersubunit, reported_head=reported_head,
-                           calculated_head=calculated_head, antibiotic_bound=antibiotic_bound,
-                           pw_info=pw_info_ordered, pw_list=pw_sorted)
-"""
-
-
+        '''
+        return render_template("correspondence_display.html", query_nts=query_units,
+                               coord=coord_ordered, coord_core=None, ifes=ifes_ordered, maxDisc=max_disc, p2=percentile,
+                               data=heatmap_data, trna_occupancy=trna_occupancy, functional_state=functional_state,
+                               factors_bound=factors_bound, reported_rotation=reported_intersubunit,
+                               calculated_rotation=calculated_intersubunit, reported_head=reported_head,
+                               calculated_head=calculated_head, antibiotic_bound=antibiotic_bound,
+                               description=description, structure_method=structure_method,
+                               structure_resolution=structure_resolution, principal_investigator=principal_investigator,
+                               publication_year=publication_year, pw_info=pw_info_ordered, pw_list=pw_sorted,
+                               release_id=nr_release, ec_id=ec_id)
