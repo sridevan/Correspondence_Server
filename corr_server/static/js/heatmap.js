@@ -272,3 +272,8 @@
         .attr("transform", "translate(" + 0 + "," + (height + 17) + ")")
         .call(legendAxis);
 
+      function updateColoring () {
+          var color = null;
+          console.log('Hello world');
+      }
+
