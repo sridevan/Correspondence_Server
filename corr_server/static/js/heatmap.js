@@ -116,7 +116,7 @@
     if (new_width > width) {
       width = new_width;
       height = new_width;
-    };
+    }
 
       // the unary operator (+) converts a numeric string into a number
       data.forEach(function(d) {
@@ -130,20 +130,6 @@
       var domainMax = d3.max(data, function(d) {return +d.discrepancy;});
       var domainMin = d3.min(data, function(d) {return +d.discrepancy;});
 
-      /*
-      // Check the maximum discrepancy value. Use 0.5 if max discrepancy is above 0.5
-      if (domainMax < 0.5) {
-        var colorScale = d3.scaleLinear()
-          .domain(linspace(domainMin, domainMax, viridisColor.length))
-          .range(viridisColor)
-          .clamp(true);
-      } else {
-        var colorScale = d3.scaleLinear()
-          .domain(linspace(domainMin, 0.5, viridisColor.length))
-          .range(viridisColor)
-          .clamp(true);
-      }
-      */
 
       var colorScale = d3.scaleLinear()
           .domain(linspace(domainMin, domainMax, viridisColor.length))
@@ -155,43 +141,6 @@
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-      // Draw the y-axis label 
-      /*
-      var dayLabels = svg.selectAll(".dayLabel")
-        .data(ife_nr)
-        .enter().append("text")
-          .text(function(d) { return d; })
-          .attr("x", 0)
-          .attr("y", function(d, i) {
-          return i * gridSize;
-          })
-          .style("text-anchor", "end")
-          .attr("transform", "translate(-5," + gridSize / 1.5 + ")")
-          //
-          .attr("class", function(d, i) {
-            return ((i >= 0)
-            ? "dayLabel mono axis axis-workweek" : "dayLabel mono axis");
-          });
-      // Draw the x-axis label
-      // Need to draw this vertically (the data elements can be large!)
-      var timeLabels = svg.selectAll(".timeLabel")
-        .data(ife_nr)
-        .enter().append("text")
-        .text(function(d) {
-          return d;
-        })
-        .attr("x", function(d, i) {
-          return  (i * gridSize);
-        })
-        .attr("y", 0)
-        //.style("text-anchor", "middle")
-        //.attr("transform", "translate(" + gridSize/2 + '-5' + ")")
-        .attr("transform", "rotate(90 " + (i * gridSize) + " 0)")
-        .attr("class", function(d, i) {
-          return ((i >= 0) ? "timeLabel mono axis axis-worktime" : "timeLabel mono axis");
-        });
-        */
 
       // Create the paired elements
       var heatMap = svg.selectAll(".ife2_index")
@@ -262,8 +211,7 @@
               return d.ife1 + ':' + d.ife2 + ' = ' + formatDecimal(d.discrepancy);
           }
         });
-        
-    
+
       heatMap.exit().remove();
 
       // append gradient bar
@@ -307,21 +255,6 @@
         .attr("transform", "translate(" + 0 + "," + (height + 5) + ")")
         .style("fill", "url(#linear-gradient)");
 
-      /*  
-      // create a scale for the legend
-      if (domainMax < 0.5) {
-        var legendScale = d3.scaleLinear()
-          .domain([domainMin, domainMax])
-          .range([0, width])
-          .clamp(true);
-      } else {
-        var legendScale = d3.scaleLinear()
-          .domain([domainMin, 0.5])
-          .range([0, width])
-          .clamp(true);
-      }
-      */
-
       var legendScale = d3.scaleLinear()
           .domain([domainMin, domainMax])
           .range([0, width])
@@ -339,23 +272,3 @@
         .attr("transform", "translate(" + 0 + "," + (height + 17) + ")")
         .call(legendAxis);
 
-      /*  
-      var inputs = d3.selectAll('input[type="checkbox"]')._groups[0];
-        document.getElementById('submit').addEventListener('click', function() {
-            var checked = [];
-            for (i = 0; i < inputs.length; i++) {
-                if (inputs[i].checked) {
-                    checked.push(inputs[i].id);
-                }
-            }
-            document.getElementById('result').innerHTML = 'Array of ids selected ' + checked;
-            console.log(checked);
-            
-        });
-       */
-
-      function updateData(){
-        d3.selectAll(".bordered")
-            .style("fill", "blue")
-
-      }
