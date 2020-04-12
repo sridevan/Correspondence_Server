@@ -167,7 +167,7 @@
     <div class="col-sm-8"> 
         <div class="tablecontainer">
           <table class="table table-bordered">
-              <thead>
+              <thead class="text-nowrap text-center">
                 <tr>
                   <th scope="col">View</th>
                   <th scope="col">RNA Chain</th>
@@ -183,13 +183,13 @@
                   <th scope="col">tRNA occupancy</th>
                   <th scope="col">Ribosome State</th>
                   <th scope="col">Factors bound</th>
-                  <th scope="col">Antibiotic/ligand bound</th>
+                  <th scope="col">Ligand bound</th>
                   {% for res in range (0, pw_list|length)%}
                   <th scope="col">{{ pw_list[res] }}</th>
                   {% endfor %}
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="text-justify">
               {% for k,v in pw_info.items() %}
                 <tr>
                   {% if coord_core == None  %}
@@ -316,6 +316,62 @@
                 var data = {{ data | tojson | safe }};
             </script>
             <!--<script type="text/javascript" src="http://rnatest.bgsu.edu/corr-server/static/js/heatmap.js"></script>-->
+      </div>
+
+      <div class='legendHR' style="display:none">
+          <svg height="30" width="340">
+              <defs>
+                  <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="10%" style="stop-color:#0d0887; stop-opacity:1" />
+                      <stop offset="20%" style="stop-color:#6603a5; stop-opacity:1" />
+                      <stop offset="30%" style="stop-color:#8a0da2; stop-opacity:1" />
+                      <stop offset="40%" style="stop-color:#ac2693; stop-opacity:1" />
+                      <stop offset="50%" style="stop-color:#ca457a; stop-opacity:1" />
+                      <stop offset="60%" style="stop-color:#df6264; stop-opacity:1" />
+                      <stop offset="70%" style="stop-color:#f0824d; stop-opacity:1" />
+                      <stop offset="80%" style="stop-color:#faa638; stop-opacity:1" />
+                      <stop offset="90%" style="stop-color:#fbcc27; stop-opacity:1" />
+                      <stop offset="100%" style="stop-color:#f0f921; stop-opacity:1" />
+                  </linearGradient>
+              </defs>
+                    <rect x="0" y="0" width="300" height="15" fill="url(#grad4)"  />
+                    <text x="0" y="30" font-family="sans-serif" font-size="12px" fill="black">0.0</text>
+                    <text x="95" y="30" font-family="sans-serif" font-size="12px" fill="black">SSU Head Rotation</text>
+                    <text x="285" y="30" font-family="sans-serif" font-size="12px" fill="black">16</text>
+          </svg>
+      </div>
+
+      <div class='legendIR' style="display:none">
+          <svg height="30" width="340">
+              <defs>
+                  <linearGradient id="grad5" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="10%" style="stop-color:#0d0887; stop-opacity:1" />
+                      <stop offset="20%" style="stop-color:#6603a5; stop-opacity:1" />
+                      <stop offset="30%" style="stop-color:#8a0da2; stop-opacity:1" />
+                      <stop offset="40%" style="stop-color:#ac2693; stop-opacity:1" />
+                      <stop offset="50%" style="stop-color:#ca457a; stop-opacity:1" />
+                      <stop offset="60%" style="stop-color:#df6264; stop-opacity:1" />
+                      <stop offset="70%" style="stop-color:#f0824d; stop-opacity:1" />
+                      <stop offset="80%" style="stop-color:#faa638; stop-opacity:1" />
+                      <stop offset="90%" style="stop-color:#fbcc27; stop-opacity:1" />
+                      <stop offset="100%" style="stop-color:#f0f921; stop-opacity:1" />
+                  </linearGradient>
+              </defs>
+                    <rect x="0" y="0" width="300" height="15" fill="url(#grad5)"  />
+                    <text x="0" y="30" font-family="sans-serif" font-size="12px" fill="black">0.0</text>
+                    <text x="95" y="30" font-family="sans-serif" font-size="12px" fill="black">Intersubunit Rotation</text>
+                    <text x="285" y="30" font-family="sans-serif" font-size="12px" fill="black">8.5</text>
+          </svg>
+      </div>
+
+      <div id="controls">
+        <label for="scale-select">Color Heatmap Diagonals by: </label>
+        <select id="scale-select">
+            <option value="fs">Functional State</option>
+            <option value="pi">Principal Investigator</option>
+            <option value="hr">SSU Head Rotation</option>
+            <option value="ir">Intersubunit Rotation</option>
+        </select>
       </div>
     </div>
   </div>
