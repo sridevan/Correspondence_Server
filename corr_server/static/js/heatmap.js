@@ -87,7 +87,13 @@
 
   // Functional States color labels
   var stateLabel = {'4U25|1|AA': '#FF0033', '6BY1|1|BA': '#000075', '4WWW|1|XA': '#FF6600', '5JC9|1|BA': '#FF6600', '6OG7|1|3': '#339933', '5J5B|1|BA': '#FF0033', '4V52|1|AA': '#FF0033', '4WF1|1|CA': '#FF0033', '4U27|1|AA': '#FF0033', '6OGF|1|3': '#339933', '5LZD|1|a': '#3300FF', '6ENF|1|a': '#3399FF', '6H4N|1|a': '#aaffc3', '5NWY|1|0': '#8B4513', '5J8A|1|BA': '#FF0033', '6SZS|1|a': '#3399FF', '3JA1|1|SA': '#991EFF', '3JBU|1|A': '#8B4513', '5JU8|1|AA': '#8B4513', '4V9O|1|FA': '#991EFF', '5L3P|1|a': '#808000', '5J91|1|BA': '#FF0033', '4U20|1|AA': '#FF0033', '5JC9|1|AA': '#FF6600', '4V55|1|AA': '#800000', '4U26|1|CA': '#FF0033', '3JBV|1|A': '#8B4513', '5KPS|1|27': '#808000', '4V57|1|CA': '#FF0033', '5WE6|1|a': '#3300FF', '5J7L|1|BA': '#FF0033', '4U1U|1|AA': '#FF0033', '4V9C|1|AA': '#CDAD00', '6C4I|1|a': '#3399FF', '4V7T|1|CA': '#FF6600', '4V9P|1|DA': '#991EFF', '4V6C|1|AA': '#FF6600', '4V6E|1|CA': '#CDAD00', '6ORE|1|2': '#339933', '4V9D|1|AA': '#800000', '4V64|1|AA': '#FF0033', '6ORL|1|2': '#339933', '5MGP|1|a': '#3399FF', '6OSQ|1|2': '#339933', '3J9Z|1|SA': '#991EFF', '6OT3|1|2': '#339933', '5KCS|1|1a': '#bfef45', '4V4H|1|CA': '#FF0033', '4V56|1|CA': '#FF0033', '6OUO|1|2': '#339933', '4V54|1|AA': '#800000', '4WOI|1|AA': '#CDAD00', '3JCD|1|a': '#fffac8', '3JCE|1|a': '#fffac8', '5O2R|1|a': '#8B4513', '4V7S|1|AA': '#FF0033', '3J9Y|1|a': '#bfef45', '5J88|1|BA': '#FF6600', '4V4Q|1|CA': '#FF6600', '4V9O|1|DA': '#991EFF', '5MDZ|1|2': '#CDAD00', '6O9J|1|a': '#469990', '4V55|1|CA': '#800000', '6BY1|1|AA': '#000075', '6OSK|1|2': '#339933', '4V9O|1|BA': '#991EFF', '5KCR|1|1a': '#CDAD00', '4V7V|1|AA': '#FF0033', '6OFX|1|3': '#339933', '4V7T|1|AA': '#FF0033', '4V57|1|AA': '#FF0033', '3JCJ|1|g': '#469990', '4WWW|1|QA': '#FF0033', '4V5B|1|BA': '#FF6600', '4V9P|1|FA': '#991EFF', '5UYM|1|A': '#3300FF', '4V4H|1|AA': '#FF0033', '4V50|1|AA': '#CDAD00', '5U4J|1|a': '#3399FF', '5J91|1|AA': '#FF0033', '6GXM|1|a': '#339933', '4V7U|1|CA': '#FF6600', '5J88|1|AA': '#FF6600', '4YBB|1|AA': '#FF6600', '5WFK|1|a': '#3300FF', '5UYN|1|A': '#3300FF', '5UYQ|1|A': '#3300FF', '4V54|1|CA': '#800000', '5UYK|1|A': '#3300FF', '4V64|1|CA': '#FF0033', '5MDV|1|2': '#3399FF', '4V4Q|1|AA': '#FF6600', '4U1V|1|AA': '#FF0033', '5KPX|1|26': '#808000', '5WE4|1|a': '#3300FF', '5J7L|1|AA': '#FF0033', '4V56|1|AA': '#FF0033', '4V7S|1|CA': '#FF6600', '5WDT|1|a': '#3300FF', '6O9K|1|a': '#469990', '4U20|1|CA': '#FF0033', '4U26|1|AA': '#FF0033', '4V6D|1|AA': '#CDAD00', '5KPW|1|26': '#808000', '6DNC|1|A': '#339933', '5UYP|1|A': '#3300FF', '4V9D|1|BA': '#339933', '4V6D|1|CA': '#CDAD00', '4U24|1|CA': '#FF0033', '4V6C|1|CA': '#FF6600', '5J5B|1|AA': '#FF0033', '4V53|1|CA': '#FF0033', '5JTE|1|AA': '#8B4513', '5WF0|1|a': '#3300FF', '4V9P|1|HA': '#991EFF', '6OGI|1|3': '#339933', '6Q97|1|2': '#3399FF', '4V7V|1|CA': '#FF6600', '6ENU|1|a': '#3399FF', '5U9G|1|A': '#3399FF', '4V9P|1|BA': '#991EFF', '5J8A|1|AA': '#FF0033', '4U25|1|CA': '#FF0033', '4V9O|1|HA': '#991EFF', '6Q9A|1|2': '#3399FF', '6ENJ|1|a': '#3399FF', '5MDY|1|2': '#3399FF', '4V50|1|CA': '#CDAD00', '4U27|1|CA': '#FF0033', '4V52|1|CA': '#FF0033', '4WF1|1|AA': '#FF6600', '6GXN|1|a': '#339933', '4V7U|1|AA': '#FF0033', '5IT8|1|AA': '#FF6600', '5AFI|1|a': '#3300FF', '4U1V|1|CA': '#FF0033', '5IQR|1|2': '#808000', '5LZA|1|a': '#CDAD00', '4V89|1|AA': '#339933', '4V5B|1|DA': '#FF6600', '5U4I|1|a': '#3399FF', '4V85|1|AA': '#339933', '4YBB|1|BA': '#FF6600', '4U24|1|AA': '#FF0033', '5UYL|1|A': '#3300FF', '6BU8|1|A': '#CDAD00', '5NP6|1|D': '#ffd8b1', '4U1U|1|CA': '#FF0033', '4V9C|1|CA': '#800000', '4V53|1|AA': '#FF0033', '5WFS|1|a': '#3300FF', '6GXO|1|a': '#339933', '5IT8|1|BA': '#FF6600', '4V6E|1|AA': '#CDAD00', '5H5U|1|h': '#3399FF', '6NQB|1|A': '#fabebe', '5MDW|1|2': '#3399FF', '4WOI|1|DA': '#CDAD00', '5U9F|1|A': '#3399FF', '6GWT|1|a': '#339933'}
-//////////////////////////////////////////////////////////////////////////////////////
+
+  var plasmaColor = ["#0d0887","#110889","#17078b","#1b078d","#20068f","#240691","#2a0693","#300596","#340597","#3a049a","#3d049b","#43049e","#4903a0","#4b03a1","#5003a2","#5303a2","#5803a3","#5c03a3","#6103a4","#6603a5","#6903a5","#6e03a6","#7103a6","#7603a7","#7b03a8","#7d03a8","#8106a6","#8408a5","#880ba4","#8a0da2","#8e10a1","#93139f","#95149e","#99179c","#9c199b","#a01c99","#a41f98","#a72197","#a92395","#ac2693","#af2990","#b32d8d","#b52f8b","#b83388","#bb3587","#be3984","#c13b82","#c43f7f","#c8427c","#ca457a","#cc4778","#cd4976","#d04d74","#d25071","#d4536f","#d6566d","#d8596b","#da5c68","#dc5e67","#df6264","#e16561","#e36860","#e56b5d","#e66c5c","#e87059","#e97556","#eb7755","#ed7b52","#ee7e50","#f0824d","#f2864a","#f38948","#f58d46","#f69044","#f89441","#f89540","#f99a3e","#f99e3c","#f9a13a","#faa638","#faa936","#fbad34","#fbb131","#fbb430","#fcb92d","#fcbc2c","#fdc02a","#fdc328","#fcc728","#fbcc27","#fad026","#f9d526","#f8d925","#f7de25","#f5e324","#f4e723","#f3ec23","#f2f022","#f1f521","#f0f921"];
+
+  var headRotation = {'4U25|1|AA': 11.1, '6BY1|1|BA': 1.1, '4WWW|1|XA': 8.4, '5JC9|1|BA': 7.8, '6OG7|1|3': 1.9, '5AFI|1|a': 0.2, '4V52|1|AA': 7.7, '4WF1|1|CA': 7.1, '4V89|1|AA': 15.0, '6OGF|1|3': 2.1, '5LZD|1|a': 0.4, '6ENF|1|a': 2.0, '6H4N|1|a': 1.7, '5NWY|1|0': 2.1, '5J8A|1|BA': 8.1, '6ORE|1|2': 2.2, '4V5B|1|BA': 6.5, '3JA1|1|SA': 5.9, '3JBU|1|A': 2.1, '5JU8|1|AA': 2.0, '4V9O|1|FA': 6.7, '5L3P|1|a': 2.5, '5J91|1|BA': 8.1, '4U20|1|AA': 11.0, '4V55|1|AA': 7.4, '4U26|1|CA': 7.7, '3JBV|1|A': 6.2, '5KPS|1|27': 2.3, '4V57|1|CA': 14.9, '5J7L|1|BA': 8.1, '4U1U|1|AA': 11.0, '4V9C|1|AA': 1.3, '6C4I|1|a': 2.3, '4V7T|1|CA': 8.3, '4V9P|1|DA': 9.8, '4V6C|1|AA': 11.2, '4V6E|1|CA': 2.7, '5J91|1|AA': 11.2, '4V9D|1|AA': 4.1, '4V64|1|AA': 7.5, '6ORL|1|2': 1.3, '5MGP|1|a': 2.2, '6OSQ|1|2': 1.6, '3J9Z|1|SA': 2.4, '6OT3|1|2': 2.0, '5KCS|1|1a': 2.5, '4V4H|1|CA': 15.7, '4V56|1|CA': 14.9, '6OUO|1|2': 2.0, '4V54|1|AA': 7.6, '4WOI|1|AA': 2.4, '3JCD|1|a': 2.0, '3JCE|1|a': 0.8, '5O2R|1|a': 1.4, '4V7S|1|AA': 11.1, '3J9Y|1|a': 2.5, '5J88|1|BA': 8.3, '4V4Q|1|CA': 15.7, '4V9O|1|DA': 7.8, '5MDZ|1|2': 2.0, '6O9J|1|a': 7.6, '4V55|1|CA': 15.3, '6BY1|1|AA': 1.2, '6OSK|1|2': 1.0, '6ENU|1|a': 1.8, '5MDV|1|2': 2.1, '5KCR|1|1a': 1.9, '5J88|1|AA': 11.3, '6OFX|1|3': 1.1, '4V7T|1|AA': 11.1, '4V57|1|AA': 7.5, '5NP6|1|D': 2.4, '4WWW|1|QA': 11.2, '6SZS|1|a': 1.9, '4V9P|1|FA': 11.8, '5UYM|1|A': 0.3, '5KPX|1|26': 1.1, '4V50|1|AA': 3.6, '4U27|1|AA': 11.0, '5WE6|1|a': 0.7, '6GXM|1|a': 2.4, '5J7L|1|AA': 11.2, '4V7V|1|AA': 11.0, '4YBB|1|AA': 11.2, '5WFK|1|a': 1.8, '5UYN|1|A': 2.2, '5UYQ|1|A': 1.0, '4V54|1|CA': 15.4, '5UYK|1|A': 2.2, '4V64|1|CA': 15.3, '4V9O|1|BA': 6.0, '4V4Q|1|AA': 7.6, '4U1V|1|AA': 10.7, '4V4H|1|AA': 7.5, '5WE4|1|a': 0.6, '4V7U|1|CA': 8.1, '4V56|1|AA': 7.2, '4V7S|1|CA': 8.2, '5WDT|1|a': 0.5, '6O9K|1|a': 2.6, '4U20|1|CA': 7.5, '4U26|1|AA': 11.3, '4V6D|1|AA': 1.5, '6DNC|1|A': 1.5, '5UYP|1|A': 2.4, '4V9D|1|BA': 1.5, '4V6D|1|CA': 3.6, '4U24|1|CA': 7.8, '5IT8|1|BA': 8.2, '5J5B|1|AA': 11.2, '4V53|1|CA': 15.4, '5JTE|1|AA': 1.8, '5WF0|1|a': 1.9, '4V9P|1|HA': 11.6, '6OGI|1|3': 7.4, '6Q97|1|2': 2.2, '4V7V|1|CA': 8.2, '5WFS|1|a': 0.9, '5U9G|1|A': 2.2, '4V9P|1|BA': 9.7, '5H5U|1|h': 2.4, '4U25|1|CA': 7.5, '4V6C|1|CA': 8.0, '4V9O|1|HA': 12.1, '6Q9A|1|2': 2.4, '6ENJ|1|a': 0.9, '5MDY|1|2': 2.4, '4V50|1|CA': 3.6, '4U27|1|CA': 7.5, '4V52|1|CA': 15.4, '4WF1|1|AA': 10.9, '4V7U|1|AA': 11.0, '5IT8|1|AA': 11.3, '5J5B|1|BA': 8.1, '4U1V|1|CA': 7.6, '5IQR|1|2': 2.3, '5LZA|1|a': 2.0, '5JC9|1|AA': 11.8, '4V5B|1|DA': 15.1, '5U4I|1|a': 2.2, '4V85|1|AA': 15.6, '4YBB|1|BA': 7.9, '4U24|1|AA': 11.1, '5UYL|1|A': 2.2, '6BU8|1|A': 0.9, '3JCJ|1|g': 3.8, '4U1U|1|CA': 7.4, '4V9C|1|CA': 2.5, '4V53|1|AA': 7.5, '5KPW|1|26': 2.3, '6GXO|1|a': 5.2, '6GXN|1|a': 2.6, '4V6E|1|AA': 1.0, '5J8A|1|AA': 11.2, '6NQB|1|A': 11.1, '5MDW|1|2': 2.2, '4WOI|1|DA': 1.1, '5U9F|1|A': 2.0, '6GWT|1|a': 1.9}
+
+  var intersubunitRotation = {'4U25|1|AA': 4.6, '6BY1|1|BA': 1.1, '4WWW|1|XA': 1.2, '5JC9|1|BA': 1.6, '6OG7|1|3': 0.6, '5AFI|1|a': 0.4, '4V52|1|AA': 3.4, '4WF1|1|CA': 1.5, '4V89|1|AA': 7.4, '6OGF|1|3': 4.9, '5LZD|1|a': 0.4, '6ENF|1|a': 2.4, '6H4N|1|a': 2.5, '5NWY|1|0': 2.3, '5J8A|1|BA': 1.4, '6ORE|1|2': 2.2, '4V5B|1|BA': 3.1, '3JA1|1|SA': 7.7, '3JBU|1|A': 2.3, '5JU8|1|AA': 2.2, '4V9O|1|FA': 1.8, '5L3P|1|a': 2.7, '5J91|1|BA': 1.4, '4U20|1|AA': 4.7, '4V55|1|AA': 2.9, '4U26|1|CA': 1.5, '3JBV|1|A': 8.2, '5KPS|1|27': 2.2, '4V57|1|CA': 2.2, '5J7L|1|BA': 1.4, '4U1U|1|AA': 4.7, '4V9C|1|AA': 1.8, '6C4I|1|a': 2.5, '4V7T|1|CA': 1.2, '4V9P|1|DA': 2.2, '4V6C|1|AA': 4.8, '4V6E|1|CA': 1.6, '5J91|1|AA': 4.7, '4V9D|1|AA': 8.4, '4V64|1|AA': 3.3, '6ORL|1|2': 1.3, '5MGP|1|a': 2.5, '6OSQ|1|2': 1.6, '3J9Z|1|SA': 2.5, '6OT3|1|2': 2.0, '5KCS|1|1a': 2.7, '4V4H|1|CA': 2.2, '4V56|1|CA': 2.2, '6OUO|1|2': 2.0, '4V54|1|AA': 3.4, '4WOI|1|AA': 6.6, '3JCD|1|a': 2.4, '3JCE|1|a': 1.3, '5O2R|1|a': 1.7, '4V7S|1|AA': 4.7, '3J9Y|1|a': 2.7, '5J88|1|BA': 1.6, '4V4Q|1|CA': 2.2, '4V9O|1|DA': 2.6, '5MDZ|1|2': 2.4, '6O9J|1|a': 3.0, '4V55|1|CA': 2.1, '6BY1|1|AA': 0.5, '6OSK|1|2': 1.0, '6ENU|1|a': 2.2, '5MDV|1|2': 2.4, '5KCR|1|1a': 2.2, '5J88|1|AA': 4.7, '6OFX|1|3': 1.5, '4V7T|1|AA': 4.5, '4V57|1|AA': 3.1, '5NP6|1|D': 2.4, '4WWW|1|QA': 4.5, '6SZS|1|a': 2.6, '4V9P|1|FA': 2.6, '5UYM|1|A': 0.4, '5KPX|1|26': 0.6, '4V50|1|AA': 2.7, '4U27|1|AA': 4.7, '5WE6|1|a': 0.7, '6GXM|1|a': 0.1, '5J7L|1|AA': 4.7, '4V7V|1|AA': 4.7, '4YBB|1|AA': 4.7, '5WFK|1|a': 2.4, '5UYN|1|A': 2.5, '5UYQ|1|A': 0.9, '4V54|1|CA': 2.5, '5UYK|1|A': 2.5, '4V64|1|CA': 2.2, '4V9O|1|BA': 2.8, '4V4Q|1|AA': 3.2, '4U1V|1|AA': 4.8, '4V4H|1|AA': 3.3, '5WE4|1|a': 0.7, '4V7U|1|CA': 1.3, '4V56|1|AA': 3.2, '4V7S|1|CA': 1.2, '5WDT|1|a': 0.3, '6O9K|1|a': 1.9, '4U20|1|CA': 1.3, '4U26|1|AA': 4.6, '4V6D|1|AA': 4.8, '6DNC|1|A': 1.8, '5UYP|1|A': 2.5, '4V9D|1|BA': 1.3, '4V6D|1|CA': 2.5, '4U24|1|CA': 1.4, '5IT8|1|BA': 1.3, '5J5B|1|AA': 4.8, '4V53|1|CA': 2.2, '5JTE|1|AA': 0.6, '5WF0|1|a': 2.2, '4V9P|1|HA': 7.1, '6OGI|1|3': 7.1, '6Q97|1|2': 2.0, '4V7V|1|CA': 1.3, '5WFS|1|a': 0.8, '5U9G|1|A': 2.4, '4V9P|1|BA': 3.7, '5H5U|1|h': 1.6, '4U25|1|CA': 1.5, '4V6C|1|CA': 1.2, '4V9O|1|HA': 6.1, '6Q9A|1|2': 2.6, '6ENJ|1|a': 0.5, '5MDY|1|2': 2.5, '4V50|1|CA': 2.0, '4U27|1|CA': 1.4, '4V52|1|CA': 2.3, '4WF1|1|AA': 4.7, '4V7U|1|AA': 4.6, '5IT8|1|AA': 4.6, '5J5B|1|BA': 1.3, '4U1V|1|CA': 1.3, '5IQR|1|2': 2.2, '5LZA|1|a': 2.2, '5JC9|1|AA': 4.6, '4V5B|1|DA': 2.0, '5U4I|1|a': 2.3, '4V85|1|AA': 6.5, '4YBB|1|BA': 1.4, '4U24|1|AA': 4.6, '5UYL|1|A': 2.4, '6BU8|1|A': 0.4, '3JCJ|1|g': 1.5, '4U1U|1|CA': 1.4, '4V9C|1|CA': 6.5, '4V53|1|AA': 3.2, '5KPW|1|26': 2.1, '6GXO|1|a': 7.9, '6GXN|1|a': 4.2, '4V6E|1|AA': 5.0, '5J8A|1|AA': 4.7, '5MDW|1|2': 2.5, '4WOI|1|DA': 1.5, '5U9F|1|A': 2.3, '6GWT|1|a': 0.9}
+  //////////////////////////////////////////////////////////////////////////////////////
 
   // get the unique values of the ife's in an ordered list
   var lookup = {};
@@ -229,7 +235,7 @@
         .attr("x2", "100%")
         .attr("y2", "0%");
 
-      // programatically generate the gradient for the legend
+      // programmatically generate the gradient for the legend
       // this creates an array of [pct, colour] pairs as stop
       // values for legend
       // Adapted from: https://gist.github.com/starcalibre/6cccfa843ed254aa0a0d
@@ -272,8 +278,82 @@
         .attr("transform", "translate(" + 0 + "," + (height + 17) + ")")
         .call(legendAxis);
 
-      function updateColoring () {
-          var color = null;
-          console.log('Hello world');
+      // attach event listener to control
+      d3.select('#scale-select').on('change', function() {
+        var colorMethod = d3.select(this).node().value;
+        if (colorMethod === 'hr') {
+            colorDiagonalsByHeadRotation();
+        } else if (colorMethod === 'ir') {
+            colorDiagonalsByIntersubunitRotation();
+        } else if (colorMethod === 'fs') {
+            colorDiagonalsByFunctionalState();
+        }
+      });
+
+      function colorDiagonalsByHeadRotation () {
+          var arr = Object.values(headRotation);
+          var minScale = Math.min(...arr);
+          var maxScale = Math.max(...arr);
+
+          var colorScaleHR = d3.scaleLinear()
+          .domain(linspace(minScale, maxScale, plasmaColor.length))
+          .range(plasmaColor)
+
+          d3.selectAll(".bordered")
+            .style("fill", function(d) {
+                if ((d.ife1 != d.ife2) && (d.discrepancy == null)) {
+                    return "#C0C0C0";
+                } else if (d.ife1 == d.ife2) {
+                    var hr = headRotation[d.ife1];
+                    $("div.legendIR").hide();
+                    $("div.legendHR").show();
+                    return colorScaleHR(hr)
+                } else {
+                return colorScale(d.discrepancy);
+                }
+            })
       }
 
+      function colorDiagonalsByIntersubunitRotation () {
+          var arr = Object.values(intersubunitRotation);
+          var minScale = Math.min(...arr);
+          var maxScale = Math.max(...arr);
+
+          var colorScaleIR = d3.scaleLinear()
+          .domain(linspace(minScale, maxScale, plasmaColor.length))
+          .range(plasmaColor);
+
+          console.log(maxScale)
+
+          d3.selectAll(".bordered")
+            .style("fill", function(d) {
+                if ((d.ife1 != d.ife2) && (d.discrepancy == null)) {
+                    return "#C0C0C0";
+                } else if (d.ife1 == d.ife2) {
+                    var hr = intersubunitRotation[d.ife1];
+                    $("div.legendHR").hide();
+                    $("div.legendIR").show();
+                    return colorScaleIR(hr)
+                } else {
+                return colorScale(d.discrepancy);
+                }
+            })
+
+
+      }
+
+      function colorDiagonalsByFunctionalState () {
+          d3.selectAll(".bordered")
+            .style("fill", function(d) {
+                if ((d.ife1 != d.ife2) && (d.discrepancy == null)) {
+                    return "#C0C0C0";
+                } else if (d.ife1 == d.ife2) {
+                    $("div.legendIR").hide();
+                    $("div.legendHR").hide();
+                    var label = stateLabel[d.ife1];
+                    return label;
+                } else {
+                return colorScale(d.discrepancy);
+                }
+            })
+      }
