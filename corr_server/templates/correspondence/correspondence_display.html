@@ -168,6 +168,7 @@
                 <tr>
                   <th scope="col">View</th>
                   <th scope="col">RNA Chain</th>
+                  <th scope="col">RNA LR</th>
                   <th scope="col">Reported head</th>
                   <th scope="col">Calculated head</th>
                   <th scope="col">Reported IS</th>
@@ -186,6 +187,7 @@
                 <tr>
                   <td><input type='checkbox' id='{{loop.index0}}' class='jmolInline' data-coord = '{{coord[loop.index0]}}' data-quality = '{{coord[loop_index0]}}'>{{loop.index0 + 1}}</td>
                   <td>{{ ifes[loop.index0][1] }}</td>
+                  <td>{{ pw_tertiary[loop.index0] }}</td>
                   <td>{{ reported_head[loop.index0] }}</td>
                   <td>{{ calculated_head[loop.index0] }}</td>
                   <td>{{ reported_rotation[loop.index0] }}</td>
@@ -195,7 +197,7 @@
                   <td>{{ factors_bound[loop.index0] }}</td>
                   <td>{{ antibiotic_bound[loop.index0] }}</td>
                   {% for res in range (0, pw_list|length)%}
-                  <td>{{ v[pw_list[res]] }}</td>
+                  <td>{{ pw_info }}</td>
                   {% endfor %}
                 </tr>
               {% endfor %}
