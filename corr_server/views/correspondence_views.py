@@ -123,6 +123,8 @@ def correspondence_geometric(method, ife, selection, core):
         ife_list, coord_data = ui.build_coord(corr_complete)
         # Get the pairwise annotation for the instances in the EC
         pw_info, pw_sorted = ps.get_pairwise_annotation(corr_complete, query_units, ife_list)
+        # Get the tertiary pairwise annotation
+        pw_lr = ps.get_pairwise_tertiary(corr_complete, ife_list)
         # Get the rotation data for calculating discrepancy
         rotation_data = rs.get_rotation(corr_std)
         # Get the center data for calculating discrepancy
@@ -141,6 +143,7 @@ def correspondence_geometric(method, ife, selection, core):
         publication_year = ui.get_annotation_new(ifes_ordered)
         # Reorder the pairwise annotation based on the new ordering
         pw_info_ordered = ui.reorder_pw(ifes_ordered, pw_info)
+        pw_lr_ordered = ui.reorder_pw(ifes_ordered, pw_lr)
         return render_template("correspondence_display.html", query_nts=query_units,
                                coord=coord_ordered, coord_core=None, ifes=ifes_ordered, maxDisc=max_disc, p2=percentile,
                                data=heatmap_data, trna_occupancy=trna_occupancy, functional_state=functional_state,
@@ -150,7 +153,7 @@ def correspondence_geometric(method, ife, selection, core):
                                description=description, structure_method=structure_method,
                                structure_resolution=structure_resolution, principal_investigator=principal_investigator,
                                publication_year=publication_year, pw_info=pw_info_ordered, pw_list=pw_sorted,
-                               release_id=nr_release, ec_id=ec_id)
+                               pw_tertiary=pw_lr_ordered, release_id=nr_release, ec_id=ec_id)
     elif method == 'relative' and core is not None:
         query_ife = ife
         query_list = pi.input_type(selection)
