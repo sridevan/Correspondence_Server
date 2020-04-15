@@ -1,6 +1,7 @@
+import itertools
 from collections import OrderedDict
 from data.models import UnitPairInteractions
-from itertools import combinations
+from itertools import combinations, groupby
 from sqlalchemy import tuple_
 from infrastructure import utility as ui
 
@@ -69,3 +70,54 @@ def get_pairwise_annotation(corr_complete, query_units, ife_list):
                 pass
 
     return pw_info, pw_sorted
+
+
+def get_pairwise_tertiary(corr_complete, ife_list):
+    unit1 = []
+    unit2 = []
+    bpair = []
+    bstack = []
+    bphosphate = []
+    bribose = []
+    for sublist in corr_complete:
+        pairwise_lr = UnitPairInteractions.query \
+            .filter(UnitPairInteractions.unit_id_1.in_(sublist)) \
+            .filter(UnitPairInteractions.f_crossing >= 4)
+
+        for row in pairwise_lr:
+            unit1.append(row.unit_id_1)
+            unit2.append(row.unit_id_2)
+            bpair.append(row.f_lwbp)
+            bstack.append(row.f_stacks)
+            bphosphate.append(row.f_bphs)
+            bribose.append(row.f_brbs)
+
+    pairwise_lr_info = zip(unit1, unit2, bpair, bstack, bphosphate, bribose)
+
+    pairwise_lr_filtered = []
+    for sublist in pairwise_lr_info:
+        new_sublist = list(filter(None, sublist))
+        pairwise_lr_filtered.append(new_sublist)
+
+    for sublist in pairwise_lr_filtered:
+        if len(sublist) == 2:
+            sublist.append('perp')
+
+    pairwise_lr_filtered = ui.get_ssu_helix_numbering(pairwise_lr_filtered)
+
+    pw_list = [list(g) for i, g in itertools.groupby(pairwise_lr_filtered, lambda x: '|'.join(x[0].split('|')[:3]))]
+
+    pw_dict = OrderedDict()
+    for ife in ife_list:
+        pw_dict[ife] = 'No interactions'
+
+    for sublist in pw_list:
+        ife = '|'.join(sublist[0][0].split('|')[:3])
+        for k, v in pw_dict.items():
+            if k == ife:
+                pw_dict[k] = sublist
+
+    return pw_dict
+
+
+
