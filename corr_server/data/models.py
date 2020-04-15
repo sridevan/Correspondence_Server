@@ -98,6 +98,7 @@ class UnitPairInteractions(db.Model):
     f_stacks = db.Column(db.String)
     f_bphs = db.Column(db.String)
     f_brbs = db.Column(db.String)
+    f_crossing = db.Column(db.Integer)
 
 
 
