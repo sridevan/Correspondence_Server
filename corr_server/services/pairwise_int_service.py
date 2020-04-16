@@ -1,4 +1,5 @@
 import itertools
+import csv
 from collections import OrderedDict
 from data.models import UnitPairInteractions
 from itertools import combinations, groupby
@@ -120,4 +121,38 @@ def get_pairwise_tertiary(corr_complete, ife_list):
     return pw_dict
 
 
+def get_pairwise_rnap(corr_lst, ife_list):
 
+    pr_dict = OrderedDict()
+    for ife in ife_list:
+        pr_dict[ife] = 'No interactions'
+
+    rna_unit = []
+    protein_unit = []
+    for sublist in corr_lst:
+        pdbid = sublist[0].split('|')[0]
+        with open('/Applications/mamp/htdocs/contact_list_rename/contact_list_' + pdbid + '.csv', 'U') as f:
+            csv_reader = csv.reader(f, delimiter=',')
+            for unit in sublist:
+                for lines in csv_reader:
+                    if unit == str(lines[0]):
+                        rna_unit.append(str(lines[0]))
+                        protein_unit.append(str(lines[3]))
+
+    interaction_contacts = zip(rna_unit, protein_unit)
+    interaction_contacts = set(interaction_contacts)
+    interaction_contacts = [list(x) for x in interaction_contacts]
+
+    interaction_contacts = ui.get_ssu_helix_numbering_contacts(interaction_contacts)
+
+    key_func = lambda x: '|'.join(x[0].split('|')[:3])
+    sorted_res = sorted(interaction_contacts, key=lambda x: x[0])
+    contacts_list = [list(g) for i, g in itertools.groupby(sorted_res, key_func)]
+
+    for sublist in contacts_list:
+        ife = '|'.join(sublist[0][0].split('|')[:3])
+        for k, v in pr_dict.items():
+            if k == ife:
+                pr_dict[k] = sublist
+
+    return pr_dict
