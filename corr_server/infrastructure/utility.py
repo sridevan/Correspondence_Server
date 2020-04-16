@@ -526,7 +526,7 @@ def helix_assignment(residue_num):
 def get_ssu_helix_numbering(pw_list):
     for sublist in pw_list:
         ife1 = '|'.join(sublist[0].split('|')[:3])
-        ife2 = ife = '|'.join(sublist[1].split('|')[:3])
+        ife2 = '|'.join(sublist[1].split('|')[:3])
         res1num = sublist[0].split('|')[-1]
         res2num = sublist[1].split('|')[-1]
         res1_helix_num = helix_assignment(res1num)
@@ -537,5 +537,23 @@ def get_ssu_helix_numbering(pw_list):
             res2_helix_num = 'Chain ' + chain_res2
         sublist.insert(2, res1_helix_num)
         sublist.insert(3, res2_helix_num)
+
+    return pw_list
+
+
+def get_ssu_helix_numbering_contacts(pw_list):
+    for sublist in pw_list:
+        ife1 = '|'.join(sublist[0].split('|')[:3])
+        ife2 = '|'.join(sublist[1].split('|')[:3])
+        res1num = sublist[0].split('|')[-1]
+        res2num = sublist[1].split('|')[-1]
+        res1_helix_num = helix_assignment(res1num)
+        if ife2 == ife1:
+            res2_helix_num = helix_assignment(res2num)
+        else:
+            chain_res2 = ife2.split('|')[2]
+            res2_helix_num = 'Chain ' + chain_res2
+        sublist.append(res1_helix_num)
+        sublist.append(res2_helix_num)
 
     return pw_list
