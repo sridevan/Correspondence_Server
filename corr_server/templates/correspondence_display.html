@@ -171,14 +171,14 @@
                 <tr>
                   <th scope="col">View</th>
                   <th scope="col">RNA Chain</th>
+                  <th scope="col" class="text-nowrap">Tertiary Interactions</th>
+                  <th scope="col" class="text-nowrap">RNA-Protein Contacts</th>
                   <th scope="col">Description</th>
                   <th scope="col">Method</th>
                   <th scope="col">Res (&#197)</th>
                   <th scope="col">PI</th>
                   <th scope="col">Publication year</th>
-                  <!--<th scope="col">Reported head</th>-->
                   <th scope="col">SSU_head rotation (&#176)</th>
-                  <!--<th scope="col">Reported IS</th>-->
                   <th scope="col">Intersubunit rotation (&#176)</th>
                   <th scope="col">tRNA occupancy</th>
                   <th scope="col">Ribosome State</th>
@@ -190,29 +190,50 @@
                 </tr>
               </thead>
               <tbody class="text-justify">
-              {% for k,v in pw_info.items() %}
+              {% for k,v in pw_tertiary.items() %}
+
                 <tr>
                   {% if coord_core == None  %}
                     <td><input type='checkbox' id='{{loop.index0}}' class='jmolInline' data-coord = '{{coord[loop.index0]}}' data-quality = '{{coord[loop.index0]}}'>{{loop.index0 + 1}}</td><td>{{ ifes[loop.index0][1] }}</td>
                   {% elif coord_core != None  %}
                     <td><input type='checkbox' id='{{loop.index0}}' class='jmolInline' data-core = '{{coord[loop.index0]}}' data-quality = '{{coord[loop.index0]}}'>{{loop.index0 + 1}}</td><td>{{ ifes[loop.index0][1] }}</td>
                   {% endif %}
+                  <td class="text-nowrap">
+                      {% if pw_tertiary[k] is string %}
+                        {{ pw_tertiary[k] }}
+                      {% else %}
+                        {% for value in pw_tertiary[k] %}
+                            <b>{{ ''.join(value[0].split('|')[3:]) }}</b>  <i>{{  ';'.join(value[4:])  }}</i>
+                            <b>{{ ''.join(value[1].split('|')[3:]) }}</b>
+                            ({{ value[2] }}:{{ value[3] }}) <br>
+                        {% endfor %}
+                      {% endif %}
+                  </td>
+                  <td class="text-nowrap">
+                      {% if rp_contacts[k] is string %}
+                        {{ rp_contacts[k] }}
+                      {% else %}
+                        {% for value in rp_contacts[k] %}
+                            <b>{{ ''.join(value[0].split('|')[3:]) }}</b> --
+                            <b>{{ ''.join(value[1].split('|')[3:]) }}</b>
+                            ({{ value[2] }}:{{ value[3] }}) <br>
+                        {% endfor %}
+                      {% endif %}
+                  </td>
                   <td>{{ description[loop.index0] }}</td>
                   <td>{{ structure_method[loop.index0] }}</td>
                   <td>{{ structure_resolution[loop.index0] }}</td>
                   <td>{{ principal_investigator[loop.index0] }}</td>
                   <td>{{ publication_year[loop.index0] }}</td>
-                    <!--<td>{{ reported_head[loop.index0] }}</td>-->
                   <td>{{ calculated_head[loop.index0] }}</td>
-                  <!--<td>{{ reported_rotation[loop.index0] }}</td>-->
                   <td>{{ calculated_rotation[loop.index0] }}</td>
                   <td>{{ trna_occupancy[loop.index0] }}</td>
                   <td>{{ functional_state[loop.index0] }}</td>
                   <td>{{ factors_bound[loop.index0] }}</td>
                   <td>{{ antibiotic_bound[loop.index0] }}</td>
-                  {% for res in range (0, pw_list|length)%}
-                  <td>{{ v[pw_list[res]] }}</td>
-                  {% endfor %}
+                    {% for res in pw_list %}
+                        <td>{{ pw_info[k][res] }}</td>
+                    {% endfor %}
                 </tr>
               {% endfor %}
               </tbody>
@@ -252,7 +273,6 @@
           <input type="button" id="next" value="Next">
           <input type="button" id='all' value='Show all'>
           <label><input type="checkbox" id="showNtNums">Nucleotide numbers</label>
-          <!--<label><input type="checkbox" id="stereo1">Stereo</label>-->
           <input type="button" id="stereo2" value="Stereo">
 
           Coloring options: <select id="colorOPT">
