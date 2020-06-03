@@ -9,7 +9,7 @@ import services.center_service as ccs
 import services.pairwise_int_service as ps
 import infrastructure.process_input as pi
 import infrastructure.utility as ui
-from definitions import members_SSU, members_LSU, ribosome_subunits
+#from definitions import members_SSU, members_LSU, ribosome_subunits
 
 blueprint = flask.Blueprint('double', __name__, template_folder='templates')
 
