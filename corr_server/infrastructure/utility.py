@@ -1,7 +1,7 @@
 from itertools import groupby, islice
 from copy import deepcopy
 from collections import defaultdict, OrderedDict
-from definitions import ribosome_subunits, rotation_data, annotation_data, ssu_helix_numbering
+from definitions import annotation_data, ssu_helix_numbering
 from discrepancy import matrix_discrepancy, relative_discrepancy
 from ordering import optimalLeafOrder
 import numpy as np
@@ -542,18 +542,22 @@ def get_ssu_helix_numbering(pw_list):
 
 
 def get_ssu_helix_numbering_contacts(pw_list):
+    chain_info = {}
     for sublist in pw_list:
         ife1 = '|'.join(sublist[0].split('|')[:3])
         ife2 = '|'.join(sublist[1].split('|')[:3])
         res1num = sublist[0].split('|')[-1]
         res2num = sublist[1].split('|')[-1]
         res1_helix_num = helix_assignment(res1num)
+        chain_id = []
         if ife2 == ife1:
             res2_helix_num = helix_assignment(res2num)
         else:
             chain_res2 = ife2.split('|')[2]
             res2_helix_num = 'Chain ' + chain_res2
+            chain_id.append(ife2)
         sublist.append(res1_helix_num)
         sublist.append(res2_helix_num)
+        chain_info[ife1] = chain_id
 
-    return pw_list
+    return pw_list, chain_info
