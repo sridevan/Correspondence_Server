@@ -143,7 +143,7 @@ def get_pairwise_rnap(corr_lst, ife_list):
     interaction_contacts = set(interaction_contacts)
     interaction_contacts = [list(x) for x in interaction_contacts]
 
-    interaction_contacts = ui.get_ssu_helix_numbering_contacts(interaction_contacts)
+    interaction_contacts, chain_info = ui.get_ssu_helix_numbering_contacts(interaction_contacts)
 
     key_func = lambda x: '|'.join(x[0].split('|')[:3])
     sorted_res = sorted(interaction_contacts, key=lambda x: x[0])
