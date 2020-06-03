@@ -6,7 +6,8 @@ REJECT_LIST = ['5AFI|1|a', '5LZE|1|A', '5LZA|1|a', '5WFK|1|a', '4WRO|1|3L', '4WS
                '3R8N|1|A', '3R8O|1|A', '4V80|1|CA', '4V80|1|AA', '6TC3|1|16S1', '6TBV|1|16S1', '6I7V|1|BA', '5LZA|1|A',
                '3J7Z|1|A', '4UY8|1|A', '4V80|1|BA', '4V80|1|DA', '5GAD|1|A', '5GAE|1|A', '5GAG|1|A', '5GAH|1|A',
                '6GBZ|1|A', '6GC0|1|A', '6GC8|1|A', '6HRM|1|1', '6I0Y|1|A', '6QUL|1|A', '6S0K|1|A', '6TBV|1|23S1',
-               '6TC3|1|23S1', '6U48|1|CA', '5NWY|1|N', '6C4H|1|A']
+               '6TC3|1|23S1', '6U48|1|CA', '5NWY|1|N', '6C4H|1|A', '6I7V|1|AA', '6OFX|1|3', '6OG7|1|3', '6OGF|1|3',
+               '6OGI|1|3', '6SZS|1|a']
 
 REJECT_LSU = ['3J7Z|1|A', '4UY8|1|A', '4V80|1|BA', '4V80|1|DA', '5GAD|1|A', '5GAE|1|A', '5GAG|1|A', '5GAH|1|A',
               '6GBZ|1|A', '6GC0|1|A', '6GC8|1|A', '6HRM|1|1', '6I0Y|1|A', '6QUL|1|A', '6S0K|1|A', '6TBV|1|23S1',
