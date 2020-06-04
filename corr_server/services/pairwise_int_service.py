@@ -122,7 +122,6 @@ def get_pairwise_tertiary(corr_complete, ife_list):
 
 
 def get_pairwise_rnap(corr_lst, ife_list):
-
     pr_dict = OrderedDict()
     for ife in ife_list:
         pr_dict[ife] = 'No interactions'
@@ -131,13 +130,16 @@ def get_pairwise_rnap(corr_lst, ife_list):
     protein_unit = []
     for sublist in corr_lst:
         pdbid = sublist[0].split('|')[0]
-        with open('/Applications/mamp/htdocs/contact_list_rename/contact_list_' + pdbid + '.csv', 'U') as f:
-            csv_reader = csv.reader(f, delimiter=',')
-            for unit in sublist:
+        try:
+            with open('/Applications/mamp/htdocs/contact_list_rename/contact_list_' + pdbid + '.csv', 'U') as f:
+                csv_reader = csv.reader(f, delimiter=',')
                 for lines in csv_reader:
-                    if unit == str(lines[0]):
-                        rna_unit.append(str(lines[0]))
-                        protein_unit.append(str(lines[3]))
+                    for unit in sublist:
+                        if unit == str(lines[0]):
+                            rna_unit.append(str(lines[0]))
+                            protein_unit.append(str(lines[3]))
+        except Exception:
+            print 'Cannot open a file'
 
     interaction_contacts = zip(rna_unit, protein_unit)
     interaction_contacts = set(interaction_contacts)
