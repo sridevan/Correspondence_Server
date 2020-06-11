@@ -118,7 +118,9 @@ def get_pairwise_tertiary(corr_complete, ife_list):
             if k == ife:
                 pw_dict[k] = sublist
 
-    return pw_dict
+    rna_chain = ui.get_chain_id(pw_dict)
+
+    return pw_dict, rna_chain
 
 
 def get_pairwise_rnap(corr_lst, ife_list):
@@ -157,4 +159,6 @@ def get_pairwise_rnap(corr_lst, ife_list):
             if k == ife:
                 pr_dict[k] = sublist
 
-    return pr_dict
+    protein_chain = ui.get_chain_id(pr_dict)
+
+    return pr_dict, protein_chain
