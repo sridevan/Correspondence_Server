@@ -1,7 +1,7 @@
 from itertools import groupby, islice
 from copy import deepcopy
 from collections import defaultdict, OrderedDict
-from definitions import annotation_data, ssu_helix_numbering
+from definitions import annotation_new, ssu_helix_numbering
 from discrepancy import matrix_discrepancy, relative_discrepancy
 from ordering import optimalLeafOrder
 import numpy as np
@@ -400,36 +400,36 @@ def get_annotation_new(ifes_ordered):
     functional_state = []
     factors_bound = []
     antibiotic_bound = []
-    reported_head = []
     calculated_head = []
-    reported_intersubunit = []
     calculated_intersubunit = []
     description = []
     structure_method = []
     structure_resolution = []
     principal_investigator = []
     publication_year = []
+    codon_pairing = []
 
     for ife1 in ifes_ordered:
-        for ife2 in annotation_data:
-            if ife1[1] == ife2[0] or ife1[1] == ife2[1]:
-                trna_occupancy.append(ife2[11])
-                functional_state.append(ife2[12])
-                factors_bound.append(ife2[13])
-                antibiotic_bound.append(ife2[14])
-                reported_head.append(ife2[2])
-                calculated_head.append(ife2[3])
-                reported_intersubunit.append(ife2[4])
-                calculated_intersubunit.append(ife2[5])
-                description.append(ife2[6])
-                structure_method.append(ife2[7])
-                structure_resolution.append(ife2[8])
-                principal_investigator.append(ife2[9])
-                publication_year.append(ife2[10])
+        for ife2 in annotation_new:
+            if ife1[1] == ife2[0]:
+                calculated_head.append(ife2[1])
+                calculated_intersubunit.append(ife2[2])
+                description.append(ife2[3])
+                structure_method.append(ife2[4])
+                structure_resolution.append(ife2[5])
+                principal_investigator.append(ife2[6])
+                publication_year.append(ife2[7])
+                trna_occupancy.append(ife2[8])
+                functional_state.append(ife2[9])
+                factors_bound.append(ife2[10])
+                antibiotic_bound.append(ife2[11])
+                codon_pairing.append(ife2[12])
 
-    return trna_occupancy, functional_state, factors_bound, antibiotic_bound, reported_intersubunit, \
-           calculated_intersubunit, reported_head, calculated_head, description, structure_method, \
-           structure_resolution, principal_investigator, publication_year
+
+    return calculated_head, calculated_intersubunit, description, structure_method, structure_resolution, \
+           principal_investigator, publication_year, trna_occupancy, functional_state, factors_bound, \
+           antibiotic_bound, codon_pairing
+
 
 
 def reorder_pw(ifes_ordered, pw_info):
@@ -440,6 +440,16 @@ def reorder_pw(ifes_ordered, pw_info):
     pw_info_ordered = custom_order(pw_info, new_order)
 
     return pw_info_ordered
+
+
+def reorder_chain(ifes_ordered, chain_unordered):
+    new_order = []
+    for elem in ifes_ordered:
+        new_order.append(elem[1])
+
+    chain_info_ordered = custom_order(chain_unordered, new_order)
+
+    return chain_info_ordered
 
 
 def reorder_pw_double(ifes_ordered, pw_info):
@@ -561,3 +571,36 @@ def get_ssu_helix_numbering_contacts(pw_list):
         chain_info[ife1] = chain_id
 
     return pw_list, chain_info
+
+
+def get_chain_id(contacts_dict):
+    chain_collection = []
+    key_collection = []
+
+    for k, v in contacts_dict.items():
+        pdbid = k.split('|')[0]
+        if type(v) is not list:
+            key_collection.append(k)
+            chain_collection.append([])
+        if type(v) is list:
+            chain_info = []
+            for sublist in v:
+                if sublist[3].startswith("Chain"):
+                    chain = sublist[3].split(" ")[1]
+                    chain_info.append((pdbid, chain))
+            chain_info = list(set(chain_info))
+            chain_collection.append(chain_info)
+            key_collection.append(k)
+
+    chain_dict = OrderedDict(zip(key_collection, chain_collection))
+
+    return chain_dict
+
+
+def merge_chain_info(rna_dict, protein_dict):
+    chain_info = OrderedDict()
+    for key in (rna_dict.viewkeys() | protein_dict.keys()):
+        if key in rna_dict: chain_info.setdefault(key, []).extend(rna_dict[key])
+        if key in protein_dict: chain_info.setdefault(key, []).extend(protein_dict[key])
+
+    return chain_info
