@@ -100,6 +100,16 @@ class UnitPairInteractions(db.Model):
     f_brbs = db.Column(db.String)
     f_crossing = db.Column(db.Integer)
 
+class ChainInfo(db.Model):
+    __tablename__ = "chain_info"
+
+    chain_id = db.Column(db.Integer, primary_key=True)
+    pdb_id = db.Column(db.String)
+    chain_name = db.Column(db.String)
+    entity_macromolecule_type = db.Column(db.String)
+    compound = db.Column(db.String)
+
+
 
 
 
