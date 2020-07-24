@@ -6,6 +6,7 @@ from discrepancy import matrix_discrepancy, relative_discrepancy
 from ordering import optimalLeafOrder
 import numpy as np
 import math
+import csv
 
 
 def custom_order(dct, spec):
@@ -316,15 +317,19 @@ def build_heatmap_data(distances, ifes_ordered):
 
     a = np.array(disc_formatted)
     a = a.astype(np.float)
-    percentile = np.percentile(a, 95)
-    max_disc = np.amax(a)
+    percentile = "{:.3f}".format(np.percentile(a, 95))
+    mean = "{:.3f}".format(np.mean(a))
+    median = "{:.3f}".format(np.median(a))
+    max_disc = "{:.3f}".format(np.amax(a))
 
     heatmap_data = [
         {"ife1": if1, "ife1_index": if1_index, "ife2": if2, "ife2_index": if2_index, "discrepancy": discrepancy}
         for if1, if1_index, if2, if2_index, discrepancy in zip(ife1, index1, ife2, index2, disc_formatted)
     ]
 
-    return max_disc, percentile, heatmap_data
+    dist_data = zip(ife1, ife2, disc_formatted)
+
+    return max_disc, percentile, mean, median, heatmap_data, dist_data
 
 
 def get_annotation(ifes_ordered):
@@ -604,3 +609,11 @@ def merge_chain_info(rna_dict, protein_dict):
         if key in protein_dict: chain_info.setdefault(key, []).extend(protein_dict[key])
 
     return chain_info
+
+
+def build_dist(dist_data, query_units):
+    with open('/Applications/mamp/htdocs/Results/geometric/SSU/Disc/' + str(query_units[0]) + '_disc.csv', "w") as f:
+        writer = csv.writer(f)
+        writer.writerow(["ID1", "ID2", "Disc"])
+        for row in dist_data:
+            writer.writerow(row)
