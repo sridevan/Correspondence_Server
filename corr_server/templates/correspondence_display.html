@@ -139,19 +139,25 @@
     <div class="col-sm-2 sidenav" text-left">
       <div class="block-div resizable" id="annotation-panel">
                         <dl>
+                            <!--
                             <dt>Query PDB:</dt>
                               <dd id="common_name" class="edit">{{ query_pdb }}</dd>
                                                         
                             <dt>Query Residues:</dt>
                               <dd id="common_name" class="edit">{{ loop_position }}</dd>
-
+                            -->
                             <dt>Max Disc:</dt>
                               <dd id="max_disc" class="edit">{{ maxDisc }}</dd>
 
                             <dt>95th percentile Disc:</dt>
                               <dd id="p_disc2" class="edit">{{ p2 }}</dd>
-                    
-                            
+
+                            <dt>Mean new:</dt>
+                              <dd id="mean" class="edit">{{ mean }}</dd>
+
+                            <dt>Median:</dt>
+                              <dd id="median" class="edit">{{ mdn }}</dd>
+
                             <dt>Equivalence Class:</dt>
                               <dd id="common_name" class="edit"><a href="http://rna.bgsu.edu/rna3dhub/nrlist/view/{{ ec_id }}" target="_blank">{{ ec_id }}</a></dd>
                                                         
