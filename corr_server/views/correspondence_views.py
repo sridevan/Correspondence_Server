@@ -58,7 +58,7 @@ bound_new = [('4V9D', 'AA'),
              ('5WE4', 'a'),
              ('5WE6', 'a'),
              ('5WF0', 'a'),
-             ('5WFK', 'a'),
+             #('5WFK', 'a'),
              ('5WFS', 'a'),
              ('3J9Z', 'SA'),
              ('3JA1', 'SA'),
@@ -71,7 +71,7 @@ bound_new = [('4V9D', 'AA'),
              ('5MDY', '2'),
              ('5MGP', 'a'),
              ('5U4I', 'a'),
-             ('5U4J', 'a'),
+             #('5U4J', 'a'),
              ('5U9F', 'A'),
              ('5U9G', 'A'),
              ('6ENF', 'a'),
@@ -198,7 +198,7 @@ def correspondence_geometric(method, ife, selection, core):
         query_type = pi.check_query(query_list)
         query_units = qs.get_query_units(query_type, query_list, query_ife)
         rejected_members, ec_members, ec_id, nr_release = em.get_ec_members(query_ife)
-        corr_complete, corr_std = cs.get_correspondence(query_units, bound_new)
+        corr_complete, corr_std = cs.get_correspondence(query_units, ec_members)
         ife_list, coord_data = ui.build_coord(corr_complete)
         # Get the pairwise annotation for the instances in the EC
         pw_info, pw_sorted = ps.get_pairwise_annotation(corr_complete, query_units, ife_list)
@@ -217,6 +217,58 @@ def correspondence_geometric(method, ife, selection, core):
         # Order the instances by similarity
         ifes_ordered, coord_ordered = ui.get_ordering(ife_list, discrepancy_data, coord_data)
         # ifes_ordered, coord_ordered = ui.get_ordering_manual(ife_list, coord_data, new_ordering)
+        # Get discrepancy statistics and build the heatmap data for display
+        max_disc, percentile, mean, median, heatmap_data, dist_data = ui.build_heatmap_data(discrepancy_data, ifes_ordered)
+        dist_csv = ui.build_dist(dist_data, query_units)
+        # Get all the annotation from the definition file
+        calculated_head, calculated_intersubunit, description, structure_method, structure_resolution, \
+        principal_investigator, publication_year, trna_occupancy, functional_state, factors_bound, \
+        antibiotic_bound, codon_pairing = ui.get_annotation_new(ifes_ordered)
+        # Reorder the pairwise annotation based on the new ordering
+        pw_info_ordered = ui.reorder_pw(ifes_ordered, pw_info)
+        pw_lr_ordered = ui.reorder_pw(ifes_ordered, pw_lr)
+        rp_contacts_ordered = ui.reorder_pw(ifes_ordered, rp_contacts)
+        chain_info_ordered = ui.reorder_chain(ifes_ordered, chain_info)
+        return render_template("correspondence_display.html", query_nts=query_units,
+                               coord=coord_ordered, coord_core=None, ifes=ifes_ordered, maxDisc=max_disc, p2=percentile,
+                               data=heatmap_data, trna_occupancy=trna_occupancy, functional_state=functional_state,
+                               factors_bound=factors_bound,
+                               calculated_rotation=calculated_intersubunit,
+                               calculated_head=calculated_head, antibiotic_bound=antibiotic_bound,
+                               description=description, structure_method=structure_method,
+                               structure_resolution=structure_resolution, principal_investigator=principal_investigator,
+                               publication_year=publication_year, pw_info=pw_info_ordered, pw_list=pw_sorted,
+                               pw_tertiary=pw_lr_ordered, rp_contacts=rp_contacts_ordered, release_id=nr_release,
+                               ec_id=ec_id, chain_info=chain_info_ordered, mean=mean, mdn=median)
+    elif method == 'relative' and core is not None:
+        query_ife = ife
+        query_list = pi.input_type(selection)
+        query_type = pi.check_query(query_list)
+        core_selection = core.split(",")
+        query_units = qs.get_query_units(query_type, query_list, query_ife)
+        core_units = qs.get_complete_units(core_selection, query_ife)
+        rejected_members, ec_members, ec_id, nr_release = em.get_ec_members(query_ife)
+        # Get correspondence for the query nts
+        corr_complete, corr_std = cs.get_correspondence(query_units, bound_new)
+        # Get correspondence for the core nts
+        core_complete = cs.get_correspondence_core(core_units, bound_new)
+        ife_list, coord_data = ui.build_coord_relative(core_complete, corr_complete)
+        # Merge the correspondence between core nts and query nts
+        corr_complete = ui.merge_list(core_complete, corr_std)
+        # Get the pairwise annotation for the instances in the EC
+        pw_info, pw_sorted = ps.get_pairwise_annotation(corr_std, query_units, ife_list)
+        # Get the tertiary pairwise annotation
+        pw_lr, rna_chain = ps.get_pairwise_tertiary(corr_complete, ife_list)
+        chain_info_rna = ci.get_chain_info(rna_chain)
+        rp_contacts, protein_chain = ps.get_pairwise_rnap(corr_complete, ife_list)
+        chain_info_protein = ci.get_chain_info(protein_chain)
+        chain_info = ui.merge_chain_info(chain_info_rna, chain_info_protein)
+        # Get the center data for calculating discrepancy
+        center_data = ccs.get_center(corr_complete)
+        # Calculate discrepancy using the geometric method
+        discrepancy_data = ui.calculate_relative_disc(ife_list, center_data, len(core_units), len(query_units))
+        # Order the instances by similarity
+        ifes_ordered, coord_ordered = ui.get_ordering(ife_list, discrepancy_data, coord_data)
         # Get discrepancy statistics and build the heatmap data for display
         max_disc, percentile, heatmap_data = ui.build_heatmap_data(discrepancy_data, ifes_ordered)
         # Get all the annotation from the definition file
@@ -239,50 +291,3 @@ def correspondence_geometric(method, ife, selection, core):
                                publication_year=publication_year, pw_info=pw_info_ordered, pw_list=pw_sorted,
                                pw_tertiary=pw_lr_ordered, rp_contacts=rp_contacts_ordered, release_id=nr_release,
                                ec_id=ec_id, chain_info=chain_info_ordered)
-    elif method == 'relative' and core is not None:
-        query_ife = ife
-        query_list = pi.input_type(selection)
-        query_type = pi.check_query(query_list)
-        core_selection = core.split(",")
-        query_units = qs.get_query_units(query_type, query_list, query_ife)
-        core_units = qs.get_complete_units(core_selection, query_ife)
-        rejected_members, ec_members, ec_id, nr_release = em.get_ec_members(query_ife)
-        # Get correspondence for the query nts
-        corr_complete, corr_std = cs.get_correspondence(query_units, ec_members)
-        # Get correspondence for the core nts
-        core_complete = cs.get_correspondence_core(core_units, ec_members)
-        ife_list, coord_data = ui.build_coord_relative(core_complete, corr_complete)
-        # Merge the correspondence between core nts and query nts
-        corr_complete = ui.merge_list(core_complete, corr_std)
-        # Get the pairwise annotation for the instances in the EC
-        pw_info, pw_sorted = ps.get_pairwise_annotation(corr_std, query_units, ife_list)
-        # Get the tertiary pairwise annotation
-        pw_lr = ps.get_pairwise_tertiary(corr_complete, ife_list)
-        rp_contacts = ps.get_pairwise_rnap(corr_complete, ife_list)
-        # Get the center data for calculating discrepancy
-        center_data = ccs.get_center(corr_complete)
-        # Calculate discrepancy using the geometric method
-        discrepancy_data = ui.calculate_relative_disc(ife_list, center_data, len(core_units), len(query_units))
-        # Order the instances by similarity
-        ifes_ordered, coord_ordered = ui.get_ordering(ife_list, discrepancy_data, coord_data)
-        # Get discrepancy statistics and build the heatmap data for display
-        max_disc, percentile, heatmap_data = ui.build_heatmap_data(discrepancy_data, ifes_ordered)
-        # Get all the annotation from the definition file
-        calculated_head, calculated_intersubunit, description, structure_method, structure_resolution, \
-        principal_investigator, publication_year, trna_occupancy, functional_state, factors_bound, \
-        antibiotic_bound, codon_pairing = ui.get_annotation_new(ifes_ordered)
-        # Reorder the pairwise annotation based on the new ordering
-        pw_info_ordered = ui.reorder_pw(ifes_ordered, pw_info)
-        pw_lr_ordered = ui.reorder_pw(ifes_ordered, pw_lr)
-        rp_contacts_ordered = ui.reorder_pw(ifes_ordered, rp_contacts)
-        return render_template("correspondence_display.html", query_nts=query_units,
-                               coord=coord_ordered, coord_core=None, ifes=ifes_ordered, maxDisc=max_disc, p2=percentile,
-                               data=heatmap_data, trna_occupancy=trna_occupancy, functional_state=functional_state,
-                               factors_bound=factors_bound,
-                               calculated_rotation=calculated_intersubunit,
-                               calculated_head=calculated_head, antibiotic_bound=antibiotic_bound,
-                               description=description, structure_method=structure_method,
-                               structure_resolution=structure_resolution, principal_investigator=principal_investigator,
-                               publication_year=publication_year, pw_info=pw_info_ordered, pw_list=pw_sorted,
-                               pw_tertiary=pw_lr_ordered, rp_contacts=rp_contacts_ordered, release_id=nr_release,
-                               ec_id=ec_id)
