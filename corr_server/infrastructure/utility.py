@@ -430,11 +430,9 @@ def get_annotation_new(ifes_ordered):
                 antibiotic_bound.append(ife2[11])
                 codon_pairing.append(ife2[12])
 
-
     return calculated_head, calculated_intersubunit, description, structure_method, structure_resolution, \
            principal_investigator, publication_year, trna_occupancy, functional_state, factors_bound, \
            antibiotic_bound, codon_pairing
-
 
 
 def reorder_pw(ifes_ordered, pw_info):
@@ -612,7 +610,8 @@ def merge_chain_info(rna_dict, protein_dict):
 
 
 def build_dist(dist_data, query_units):
-    with open('/Applications/mamp/htdocs/Results/geometric/SSU/Disc/' + str(query_units[0]) + '_disc.csv', "w") as f:
+    with open('/Applications/mamp/htdocs/Results/geometric/SSU/Disc_JL_EM/' + str(query_units[0]) + '_disc.csv',
+              "w") as f:
         writer = csv.writer(f)
         writer.writerow(["ID1", "ID2", "Disc"])
         for row in dist_data:
