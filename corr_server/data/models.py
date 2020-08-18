@@ -56,6 +56,7 @@ class UnitRotations(db.Model):
     cell_2_1 = db.Column(db.Float)
     cell_2_2 = db.Column(db.Float)
 
+
 class LoopInfo(db.Model):
     __tablename__ = "loop_info"
 
@@ -63,12 +64,14 @@ class LoopInfo(db.Model):
     unit_ids = db.Column(db.Text)
     loop_name = db.Column(db.Text)
 
+
 class NrReleases(db.Model):
     __tablename__ = "nr_releases"
 
     nr_release_id = db.Column(db.String, primary_key=True)
     date = db.Column(db.Date)
     classes = db.relationship("NrClasses", backref='nr_releases', lazy=True)
+
 
 class NrClasses(db.Model):
     __tablename__ = "nr_classes"
@@ -79,6 +82,7 @@ class NrClasses(db.Model):
     resolution = db.Column(db.String)
     chains = db.relationship("NrChains", backref='nr_classes', lazy=True)
 
+
 class NrChains(db.Model):
     __tablename__ = "nr_chains"
 
@@ -86,6 +90,7 @@ class NrChains(db.Model):
     ife_id = db.Column(db.String)
     nr_class_id = db.Column(db.Integer, db.ForeignKey("nr_classes.nr_class_id"))
     nr_release_id = db.Column(db.String, db.ForeignKey("nr_releases.nr_release_id"))
+
 
 class UnitPairInteractions(db.Model):
     __tablename__ = "unit_pairs_interactions"
@@ -100,6 +105,7 @@ class UnitPairInteractions(db.Model):
     f_brbs = db.Column(db.String)
     f_crossing = db.Column(db.Integer)
 
+
 class ChainInfo(db.Model):
     __tablename__ = "chain_info"
 
@@ -110,7 +116,16 @@ class ChainInfo(db.Model):
     compound = db.Column(db.String)
 
 
+class IfeInfo(db.Model):
+    __tablename__ = "ife_info"
+
+    ife_id = db.Column(db.String, primary_key=True)
+    pdb_id = db.Column(db.String)
+    pdbs = db.relationship("PDBInfo", backref='ife_info', lazy=True)
 
 
+class PDBInfo(db.Model):
+    __tablename__ = "pdb_info"
 
-
+    pdb_id = db.Column(db.String, db.ForeignKey("ife_info.pdb_id"), primary_key=True, )
+    experimental_technique = db.Column(db.String)
