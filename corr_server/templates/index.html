@@ -44,6 +44,12 @@
             <input type="text" class="form-control" id="ife" placeholder="Enter the query ife ">
             <label for="selection">Enter the Query Selection</label>
             <input type="text" class="form-control" id="selection" placeholder="This could be a loop id, range/s or a sequence of residue number separated by (',') ">
+            <label for="experimental-method">Choose Structure determination method</label>
+            <select class="form-control" id="experimental-method">
+                <option value="all" selected>Both X-ray & Cryo-EM</option>
+                <option value="X-Ray">X-Ray</option>
+                <option value="EM">Cryo-EM</option>
+            </select>
             <label for="method">Choose Discrepancy calculation method</label>
             <select class="form-control" id="method">
                 <option value="geometric" selected>geometric</option>
@@ -75,10 +81,11 @@
             let id = $('#selection').val();
             let ife = $('#ife').val();
             let method = $('#method').val();
+            let exp = $('#experimental-method').val();
             let core = $('#core').val();
             if (method == 'geometric') {
                 let formAction = $('#generateCorrespondence').attr('action');
-                $('#generateCorrespondence').attr('action', formAction + method + '/' + ife + '/' + id);
+                $('#generateCorrespondence').attr('action', formAction + method + '/' + ife + '/' + id + '/' + exp);
             } else {
                 let formAction = $('#generateCorrespondence').attr('action');
                 $('#generateCorrespondence').attr('action', formAction + method + '/' + ife + '/' + id + '/' + core);
