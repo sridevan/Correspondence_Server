@@ -1,5 +1,6 @@
-from data.models import NrClasses, NrChains, NrReleases
+from data.models import NrClasses, NrChains, NrReleases, IfeInfo, PDBInfo
 from infrastructure.utility import reject_ife
+from sqlalchemy import case
 
 REJECT_LIST = ['5AFI|1|a', '5LZE|1|A', '5LZA|1|a', '5WFK|1|a', '4WRO|1|3L', '4WSD|1|1K', '4WSD|1|1L', '4WSD|1|3L',
                '4WT1|1|1K', '4WT1|1|1L', '5U4J|1|a', '4WT1|1|3K', '4WT1|1|3L', '4WZO|1|3K', '4WZO|1|3L', '4Y4P|1|1w',
@@ -14,7 +15,44 @@ REJECT_LSU = ['3J7Z|1|A', '4UY8|1|A', '4V80|1|BA', '4V80|1|DA', '5GAD|1|A', '5GA
               '6TC3|1|23S1', '6U48|1|CA']
 
 
-def get_ec_members(query_ife):
+def filter_experimental_technique(members, exp_method):
+    if exp_method == 'X-Ray':
+        ordering = case(
+            {unit: index for index, unit in enumerate(members)},
+            value=IfeInfo.ife_id
+        )
+
+        ife_list = IfeInfo.query.join(PDBInfo) \
+            .filter(IfeInfo.ife_id.in_(members)) \
+            .order_by(ordering) \
+            .filter(PDBInfo.experimental_technique == 'X-RAY DIFFRACTION')
+        ec_members = []
+        for row in ife_list:
+            ec_members.append(row.ife_id)
+
+        return ec_members
+
+    elif exp_method == 'EM':
+        ordering = case(
+            {unit: index for index, unit in enumerate(members)},
+            value=IfeInfo.ife_id
+        )
+
+        ife_list = IfeInfo.query.join(PDBInfo) \
+            .filter(IfeInfo.ife_id.in_(members)) \
+            .order_by(ordering) \
+            .filter(PDBInfo.experimental_technique == 'ELECTRON MICROSCOPY')
+        ec_members = []
+        for row in ife_list:
+            ec_members.append(row.ife_id)
+
+        return ec_members
+
+    else:
+        return members
+
+
+def get_ec_members(query_ife, exp_method):
     ife_list = NrChains.query.join(NrClasses, NrReleases) \
         .filter(NrChains.ife_id == query_ife).filter(NrClasses.resolution == '4.0') \
         .order_by(NrReleases.date.desc()).limit(1)
@@ -30,6 +68,8 @@ def get_ec_members(query_ife):
     for row in ec_query:
         equivalence_class = row.name
         nr_release = row.nr_release_id
+
+    ec_members = filter_experimental_technique(ec_members, exp_method)
 
     rejected_members, cleaned_ec_members = reject_ife(ec_members, REJECT_LIST)
 
