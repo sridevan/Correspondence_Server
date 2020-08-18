@@ -188,16 +188,17 @@ new_ordering = [('0', '4V4Q|1|CA'), ('1', '4V4H|1|CA'), ('2', '4V53|1|CA'), ('3'
                 ('130', '5WE6|1|a'), ('131', '3JCE|1|a'), ('132', '4V9C|1|AA')]
 
 
-@blueprint.route('/correspondence/<method>/<ife>/<selection>', defaults={'core': None})
-@blueprint.route('/correspondence/<method>/<ife>/<selection>/<core>')
+@blueprint.route('/correspondence/<method>/<ife>/<selection>/<exp>', defaults={'core': None})
+# @blueprint.route('/correspondence/<method>/<ife>/<selection>/<core>')
 # @response(template_file='packages/details.html')
-def correspondence_geometric(method, ife, selection, core):
+def correspondence_geometric(method, ife, selection, exp, core):
     if method == 'geometric' and core is None:
         query_ife = ife
+        exp_method = exp
         query_list = pi.input_type(selection)
         query_type = pi.check_query(query_list)
         query_units = qs.get_query_units(query_type, query_list, query_ife)
-        rejected_members, ec_members, ec_id, nr_release = em.get_ec_members(query_ife)
+        rejected_members, ec_members, ec_id, nr_release = em.get_ec_members(query_ife, exp_method)
         corr_complete, corr_std = cs.get_correspondence(query_units, ec_members)
         ife_list, coord_data = ui.build_coord(corr_complete)
         # Get the pairwise annotation for the instances in the EC
