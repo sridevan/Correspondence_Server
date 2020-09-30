@@ -207,11 +207,11 @@
         .append("title")
         .text(function(d) {
           var formatDecimal = d3.format(",.4f")
-          if (d.ife1 == d.ife2) {
-            var row = d.ife1_index + 1;
+          if (d.ife1 == d.ife2) { var row = d.ife1_index + 1;
             var label = stateLabel[d.ife1]
             var annotation = formatAnnotation(annotationEc, d.ife1, row)
             return annotation
+            // return `Discrepancy between ${d.ife1} and ${d.ife2} is 0`
             // return d.ife1 + ':' + d.ife2 + ' = ' + formatDecimal(d.discrepancy);
           } else if ((d.ife1 != d.ife2) && (d.discrepancy == null)) {
               return 'No discrepancy value is computed between ' + d.ife1 + ' and ' + d.ife2;
