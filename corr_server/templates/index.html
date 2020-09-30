@@ -85,10 +85,10 @@
             let core = $('#core').val();
             if (method == 'geometric') {
                 let formAction = $('#generateCorrespondence').attr('action');
-                $('#generateCorrespondence').attr('action', formAction + method + '/' + ife + '/' + id + '/' + exp);
+                $('#generateCorrespondence').attr('action', formAction + method + '/' + ife + '/' + id + '/' + exp + '/None');
             } else {
                 let formAction = $('#generateCorrespondence').attr('action');
-                $('#generateCorrespondence').attr('action', formAction + method + '/' + ife + '/' + id + '/' + core);
+                $('#generateCorrespondence').attr('action', formAction + method + '/' + ife + '/' + id + '/' + exp + '/' + core);
             }
         });
 
