@@ -211,6 +211,33 @@ def calculate_geometric_disc(ife_list, rotation_data, center_data):
     return distances
 
 
+def pw_similarity(lst1, lst2):
+    score = 0
+
+    for a1, b1 in zip(lst1, lst2):
+        if a1 == b1:
+            score += 0
+        elif (a1 == 'n' + b1) or (b1 == 'n' + a1):
+            score += 0.5
+        elif a1 == '-' or b1 == '-':
+            score += 1.0
+        elif a1 != b1:
+            score += 0.8
+
+    return score
+
+
+def calculate_pw_score(ife_list, pw_list):
+    scores = defaultdict(lambda: defaultdict(int))
+
+    for a in range(0, len(ife_list)):
+        for b in range(a + 1, len(ife_list)):
+            score = pw_similarity(pw_list[a], pw_list[b])
+            scores[ife_list[a][1]][ife_list[b][1]] = score
+
+    return scores
+
+
 def calculate_relative_disc(ife_list, center_data, core_len, query_len):
     distances = defaultdict(lambda: defaultdict(int))
 
@@ -330,6 +357,36 @@ def build_heatmap_data(distances, ifes_ordered):
     dist_data = zip(ife1, ife2, disc_formatted)
 
     return max_disc, percentile, mean, median, heatmap_data, dist_data
+
+
+def build_pairwise_heatmap(scores, ifes_ordered):
+    index1 = []
+    index2 = []
+    ife1 = []
+    ife2 = []
+
+    for member1 in ifes_ordered:
+        for member2 in ifes_ordered:
+            index1.append(member1[0])
+            ife1.append(member1[1])
+            index2.append(member2[0])
+            ife2.append(member2[1])
+
+    ife_pairs = zip(ife1, ife2)
+
+    disc_ordered = [get(scores, first, second) or get(scores, second, first) for first, second in ife_pairs]
+
+    disc_formatted = []
+    for disc in disc_ordered:
+        disc = '%.2f' % disc
+        disc_formatted.append(disc)
+
+    heatmap_data = [
+        {"ife1": if1, "ife1_index": if1_index, "ife2": if2, "ife2_index": if2_index, "discrepancy": discrepancy}
+        for if1, if1_index, if2, if2_index, discrepancy in zip(ife1, index1, ife2, index2, disc_formatted)
+    ]
+
+    return heatmap_data
 
 
 def get_annotation(ifes_ordered):
@@ -610,9 +667,30 @@ def merge_chain_info(rna_dict, protein_dict):
 
 
 def build_dist(dist_data, query_units):
-    with open('/Applications/mamp/htdocs/Results/geometric/SSU/Disc_JL_EM/' + str(query_units[0]) + '_disc.csv',
+    with open('/Applications/mamp/htdocs/Results/relative/SSU/5J7L/Disc_IL_bound/' + str(query_units[0]) + '_disc.csv',
               "w") as f:
         writer = csv.writer(f)
         writer.writerow(["ID1", "ID2", "Disc"])
         for row in dist_data:
             writer.writerow(row)
+
+
+def get_center_len(center_data):
+    center = []
+    for k, v in enumerate(center_data):
+        if len(v) != 11:
+            center.append(k)
+
+    return center
+
+
+def process_pw(annotation):
+    pw = []
+    for k, v in annotation.items():
+        for k1, v2 in v.items():
+            pw.append(v2)
+        size = len(v)
+
+    processed_pw = [pw[i:i + size] for i in range(0, len(pw), size)]
+
+    return processed_pw
