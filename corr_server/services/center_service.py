@@ -5,7 +5,7 @@ import numpy as np
 
 def get_center(corr_std):
     units_center = []
-    # units_num_center = [] # debugging statement
+    units_num_center = [] # debugging statement
     query_std_len = len(corr_std[0])
 
     # This section of the code deals with the database query to get the centers data
@@ -20,8 +20,10 @@ def get_center(corr_std):
                                                  UnitCenters.name == 'base').order_by(ordering)
         for row in centers_query:
             units_center.append(np.array([row.x, row.y, row.z]))
-            # units_num_center.append(row.unit_id) # debugging statement
+            units_num_center.append(row.unit_id) # debugging statement
 
     units_center_list = [units_center[i:i + query_std_len] for i in xrange(0, len(units_center), query_std_len)]
 
-    return units_center_list
+    units_num = [units_num_center[i:i + query_std_len] for i in xrange(0, len(units_num_center), query_std_len)]
+
+    return units_center_list, units_num, len(units_center), len(units_num_center)
