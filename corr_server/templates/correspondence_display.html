@@ -8,9 +8,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
-  <!--
-    <script src="http://rna.bgsu.edu/rna3dhub/js/jsmol/JSmol.min.nojq.js"></script>
-    <script src="http://rna.bgsu.edu/rna3dhub/js/jquery.jmolTools.js"></script>-->
+   <!-- <script src="http://rna.bgsu.edu/rna3dhub/js/jsmol/JSmol.min.nojq.js"></script>
+    <script src="http://rna.bgsu.edu/rna3dhub/js/jquery.jmolTools.js"></script>
+    <script src="http://rna.bgsu.edu/webfr3d/js/data_corr.js"></script> -->
   <script src="/static/js/jsmol/JSmol.min.nojq.js"></script>
   <script src="/static/js/jquery.jmolTools.js"></script>
   <script src="/static/js/data_test.js"></script>
@@ -178,7 +178,7 @@
                   <th scope="col">View</th>
                   <th scope="col">RNA Chain</th>
                   <th scope="col" class="text-nowrap">Tertiary Interactions</th>
-                  <th scope="col" class="text-nowrap">RNA-Protein Contacts</th>
+                  <!--<th scope="col" class="text-nowrap">RNA-Protein Contacts</th>-->
                   <th scope="col">Description</th>
                   <th scope="col">Method</th>
                   <th scope="col">Res (&#197)</th>
@@ -215,17 +215,17 @@
                         {% endfor %}
                       {% endif %}
                   </td>
-                  <td class="text-nowrap">
-                      {% if rp_contacts[k] is string %}
-                        {{ rp_contacts[k] }}
-                      {% else %}
-                        {% for value in rp_contacts[k] %}
-                            <b>{{ ''.join(value[0].split('|')[3:]) }}</b> --
-                            <b>{{ ''.join(value[1].split('|')[3:]) }}</b>
-                            ({{ value[2] }}:{{ value[3] }}) <br>
-                        {% endfor %}
-                      {% endif %}
-                  </td>
+                  <!--<td class="text-nowrap">
+                      {#%  if rp_contacts[k] is string %#}
+                        {#  #}{ rp_contacts[k] }}
+                      {#% else %#}
+                        {#% for value in rp_contacts[k] %#}
+                            <b>{#  #}{ ''.join(value[0].split('|')[3:]) }}</b> --
+                            <b>{#  #}{ ''.join(value[1].split('|')[3:]) }}</b>
+                            ({#  #}{ value[2] }}:{#  #}{ value[3] }}) <br>
+                        {#% endfor %#}
+                      {#% endif %#}
+                  </td>-->
                   <td>{{ description[loop.index0] }}</td>
                   <td>{{ structure_method[loop.index0] }}</td>
                   <td>{{ structure_resolution[loop.index0] }}</td>
@@ -409,6 +409,6 @@
 
 </body>
 
-<!--<script src="http://rna.bgsu.edu/webfr3d/js/heatmap.js"></script>-->
+<!--<script src="http://rna.bgsu.edu/webfr3d/js/heatmap_corr.js"></script>-->
 <script src="/static/js/heatmap.js"></script>
 </html>
