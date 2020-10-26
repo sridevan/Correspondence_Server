@@ -8,6 +8,8 @@ import numpy as np
 import math
 import csv
 
+global ssu_helix_numbering
+
 
 def custom_order(dct, spec):
     res = OrderedDict()
@@ -218,7 +220,7 @@ def pw_similarity(lst1, lst2):
         if a1 == b1:
             score += 0
         elif (a1 == 'n' + b1) or (b1 == 'n' + a1):
-            score += 0.5
+            score += 0.2
         elif a1 == '-' or b1 == '-':
             score += 1.0
         elif a1 != b1:
