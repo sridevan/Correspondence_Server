@@ -51,7 +51,6 @@ def process_annotation(pw_annotation, ife_list):
 
 
 def get_pairwise_test(corr_complete, query_units, ife_list):
-
     bps_comb = []
     for a in range(0, len(corr_complete)):
         bps_comb.append([(map(str, comb)) for comb in combinations(corr_complete[a], 2)])
@@ -78,11 +77,16 @@ def get_pairwise_test(corr_complete, query_units, ife_list):
 
         pairwise_bpair = zip(unit1, unit2, bpair)
         pairwise_bstack = zip(unit1, unit2, bstack)
+        pairwise_bribose = zip(unit1, unit2, bribose)
+        pairwise_bphosphate = zip(unit1, unit2, bphosphate)
 
     bpair_annotation, bpair_numbering = process_annotation(pairwise_bpair, ife_list)
     bstack_annotation, bstack_numbering = process_annotation(pairwise_bstack, ife_list)
+    bribose_annotation, bribose_numbering = process_annotation(pairwise_bribose, ife_list)
+    bphosphate_annotation, bphosphate_numbering = process_annotation(pairwise_bphosphate, ife_list)
 
-    return bpair_annotation, bpair_numbering, bstack_annotation, bstack_numbering
+    return bpair_annotation, bpair_numbering, bstack_annotation, bstack_numbering, \
+           bribose_annotation, bribose_numbering, bphosphate_annotation, bphosphate_numbering
 
 
 def get_pairwise_annotation(corr_complete, query_units, ife_list):
