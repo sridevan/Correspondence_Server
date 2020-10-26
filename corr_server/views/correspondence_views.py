@@ -1,6 +1,6 @@
 import flask
 from flask import render_template, request
-from definitions import  annotation_new
+from definitions import annotation_new
 import json
 import services.correspondence_service as cs
 import services.query_service as qs
@@ -188,6 +188,93 @@ new_ordering = [('0', '4V4Q|1|CA'), ('1', '4V4H|1|CA'), ('2', '4V53|1|CA'), ('3'
                 ('126', '5LZD|1|a'), ('127', '5KPX|1|26'), ('128', '5JTE|1|AA'), ('129', '4WOI|1|DA'),
                 ('130', '5WE6|1|a'), ('131', '3JCE|1|a'), ('132', '4V9C|1|AA')]
 
+asite_trna = [#('6BU8', 'A'),
+ ('3JCE', 'a'),
+ ('5AFI', 'a'),
+ ('5UYK', 'A'),
+ ('5UYL', 'A'),
+ ('5UYM', 'A'),
+ ('5UYN', 'A'),
+ ('5UYP', 'A'),
+ ('5UYQ', 'A'),
+ ('5WDT', 'a'),
+ ('5WE4', 'a'),
+ ('5WE6', 'a'),
+ ('5WF0', 'a'),
+ ('5WFK', 'a'),
+ ('5WFS', 'a'),
+ ('6ENJ', 'a'),
+ ('3JBV', 'A'),
+ ('5JTE', 'AA'),
+ ('5LZD', 'a'),
+ ('5IQR', '2'),
+ ('5KPW', '26'),
+ ('5KPX', '26'),
+ ('5L3P', 'a')]
+# ('4V6E', 'AA'),
+# ('4V6E', 'CA'),
+ #('6BY1', 'BA'),
+ #('6BY1', 'AA')]
+
+psite_trna = [#('4V50', 'AA'),
+ #('4V50', 'CA'),
+ ('4V9D', 'AA'),
+ #('4V9D', 'BA'),
+ #('5MDZ', '2'),
+ ('6GWT', 'a'),
+ ('6GXM', 'a'),
+ ('6GXN', 'a'),
+ ('6GXO', 'a'),
+ #('4V9C', 'AA'),
+ ('4V9C', 'CA'),
+ #('4WOI', 'AA'),
+ #('4WOI', 'DA'),
+ #('5KCR', '1a'),
+ #('5KCS', '1a'),
+ #('3J9Y', 'a'),
+ ('3JCD', 'a'),
+ ('3J9Z', 'SA'),
+ ('3JA1', 'SA'),
+ ('3JCJ', 'g'),
+ ('6DNC', 'A'),
+ #('5NP6', 'D'),
+ ('5H5U', 'h'),
+ ('5MDV', '2'),
+ ('5MDW', '2'),
+ ('5MDY', '2'),
+ ('5MGP', 'a'),
+ ('5U4I', 'a'),
+ #('5U4J', 'a'),
+ ('5U9F', 'A'),
+ ('5U9G', 'A'),
+ ('6ENF', 'a'),
+ ('6ENU', 'a'),
+ ('6C4I', 'a'),
+ ('3JBU', 'A'),
+ #('5JU8', 'AA'),
+ ('5NWY', '0'),
+ ('5O2R', 'a'),
+ ('5LZA', 'a'),
+ ('5KPS', '27'),
+ #('4V6D', 'AA'),
+ #('4V6D', 'CA'),
+ #('6O9J', 'a'),
+ ('6O9K', 'a'),
+ #('6OFX', '3'),
+ #('6OGI', '3'),
+ ('6OGF', '3'),
+ ('6OG7', '3'),
+ #('6ORE', '2'),
+ ('6OSQ', '2'),
+ ('6ORL', '2'),
+ ('6OUO', '2'),
+ ('6OT3', '2'),
+ ('6OSK', '2'),
+ #('6Q97', '2'),
+ #('6Q9A', '2'),
+ ('6SZS', 'a')]
+
+
 
 @blueprint.route('/correspondence/<method>/<ife>/<selection>/<exp>/<core>')
 # @blueprint.route('/correspondence/<method>/<ife>/<selection>/<core>')
@@ -200,11 +287,12 @@ def correspondence_geometric(method, ife, selection, exp, core):
         query_type = pi.check_query(query_list)
         query_units = qs.get_query_units(query_type, query_list, query_ife)
         rejected_members, ec_members, ec_id, nr_release = em.get_ec_members(query_ife, exp_method)
-        corr_complete, corr_std = cs.get_correspondence(query_units, ec_members[:10])
+        corr_complete, corr_std = cs.get_correspondence(query_units, ec_members)
         ife_list, coord_data = ui.build_coord(corr_complete)
         # Get the pairwise annotation for the instances in the EC
         # pw_info, pw_sorted, unique_pw = ps.get_pairwise_annotation(corr_complete, query_units, ife_list)
-        a1, a2, b1, b2 = ps.get_pairwise_test(corr_complete, query_units, ife_list)
+        bp_annotation, bp_num, bsk_annotation, bsk_num, \
+        br_annotation, br_num, bph_annotation, bph_num = ps.get_pairwise_test(corr_complete, query_units, ife_list)
         # # Get the tertiary pairwise annotation
         pw_lr, rna_chain = ps.get_pairwise_tertiary(corr_complete, ife_list)
         # chain_info_rna = ci.get_chain_info(rna_chain)
@@ -231,10 +319,14 @@ def correspondence_geometric(method, ife, selection, exp, core):
         principal_investigator, publication_year, trna_occupancy, functional_state, factors_bound, \
         antibiotic_bound, codon_pairing = ui.get_annotation_new(ifes_ordered)
         # Reorder the pairwise annotation based on the new ordering
-        bp_ordered = ui.reorder_pw(ifes_ordered, a1)
+        bp_ordered = ui.reorder_pw(ifes_ordered, bp_annotation)
         bp_list = ui.process_pw(bp_ordered)
-        bsk_ordered = ui.reorder_pw(ifes_ordered, b1)
+        bsk_ordered = ui.reorder_pw(ifes_ordered, bsk_annotation)
         bsk_list = ui.process_pw(bsk_ordered)
+        # br_ordered = ui.reorder_pw(ifes_ordered, br_annotation)
+        # br_list = ui.process_pw(br_ordered)
+        # bph_ordered = ui.reorder_pw(ifes_ordered, bph_annotation)
+        # bph_list = ui.process_pw(bph_ordered)
         complete_pw = [a + b for a, b in zip(bp_list, bsk_list)]
         pw_data = ui.calculate_pw_score(ifes_ordered, complete_pw)
         pw_heatmap_data = ui.build_pairwise_heatmap(pw_data, ifes_ordered)
@@ -242,19 +334,19 @@ def correspondence_geometric(method, ife, selection, exp, core):
         # rp_contacts_ordered = ui.reorder_pw(ifes_ordered, rp_contacts)
         # chain_info_ordered = ui.reorder_chain(ifes_ordered, chain_info)
         return render_template("correspondence_display.html", query_nts=query_units,
-                                coord=coord_ordered, coord_core=None, ifes=ifes_ordered, maxDisc=max_disc, p2=percentile,
-                                data=heatmap_data, trna_occupancy=trna_occupancy, functional_state=functional_state,
-                                factors_bound=factors_bound, data2=pw_heatmap_data,
-                                calculated_rotation=calculated_intersubunit,
-                                calculated_head=calculated_head, antibiotic_bound=antibiotic_bound,
-                                description=description, structure_method=structure_method,
-                                structure_resolution=structure_resolution, principal_investigator=principal_investigator,
-                                publication_year=publication_year, pw_info=bsk_ordered, pw_list=b2,
-                                pw_tertiary=pw_lr_ordered,
-                                release_id=nr_release, ec_id=ec_id, mean=mean, mdn=median)
+                               coord=coord_ordered, coord_core=None, ifes=ifes_ordered, maxDisc=max_disc, p2=percentile,
+                               data=heatmap_data, trna_occupancy=trna_occupancy, functional_state=functional_state,
+                               factors_bound=factors_bound, #data2=pw_heatmap_data,
+                               calculated_rotation=calculated_intersubunit,
+                               calculated_head=calculated_head, antibiotic_bound=antibiotic_bound,
+                               description=description, structure_method=structure_method,
+                               structure_resolution=structure_resolution, principal_investigator=principal_investigator,
+                               publication_year=publication_year, bp_num=bp_num, bsk_num=bsk_num,
+                               bp_list=bp_ordered, bsk_list=bsk_ordered, pw_tertiary=pw_lr_ordered,
+                               release_id=nr_release, ec_id=ec_id, mean=mean, mdn=median)
         # return render_template("correspondence_display_test.html", query_nts=query_units, coord=coord_ordered,
-                              # coord_core=None, ifes=ifes_ordered, maxDisc=max_disc, p2=percentile, data=heatmap_data,
-                              # release_id=nr_release, ec_id=ec_id, mean=mean, mdn=median)
+        # coord_core=None, ifes=ifes_ordered, maxDisc=max_disc, p2=percentile, data=heatmap_data,
+        # release_id=nr_release, ec_id=ec_id, mean=mean, mdn=median)
     elif method == 'relative':
         query_ife = ife
         query_list = pi.input_type(selection)
