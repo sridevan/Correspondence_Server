@@ -190,8 +190,11 @@
                   <th scope="col">Ribosome State</th>
                   <th scope="col">Factors bound</th>
                   <th scope="col">Ligand bound</th>
-                  {% for res in range (0, pw_list|length)%}
-                  <th scope="col">{{ pw_list[res] }}</th>
+                  {% for res in range (0, bp_num|length)%}
+                  <th scope="col">{{ bp_num[res] }}</th>
+                  {% endfor %}
+                  {% for res in range (0, bsk_num|length)%}
+                  <th scope="col">{{ bsk_num[res] }}</th>
                   {% endfor %}
                 </tr>
               </thead>
@@ -237,8 +240,11 @@
                   <td>{{ functional_state[loop.index0] }}</td>
                   <td>{{ factors_bound[loop.index0] }}</td>
                   <td>{{ antibiotic_bound[loop.index0] }}</td>
-                    {% for res in pw_list %}
-                        <td>{{ pw_info[k][res] }}</td>
+                    {% for res in bp_num %}
+                        <td>{{ bp_list[k][res] }}</td>
+                    {% endfor %}
+                    {% for res in bsk_num %}
+                        <td>{{ bsk_list[k][res] }}</td>
                     {% endfor %}
                 </tr>
               {% endfor %}
@@ -400,6 +406,17 @@
         </select>
       </div>
     </div>
+
+    <div>
+        <!--
+        <div id ='chart_test'>
+            <script type="text/javascript">
+                var data2 = {{ data | tojson | safe }};
+            </script>
+        </div>
+        -->
+
+    </div>
   </div>
 </div>
 
@@ -411,4 +428,5 @@
 
 <!--<script src="http://rna.bgsu.edu/webfr3d/js/heatmap_corr.js"></script>-->
 <script src="/static/js/heatmap.js"></script>
+<!--<script src="/static/js/heatmap_test.js"></script>-->
 </html>
