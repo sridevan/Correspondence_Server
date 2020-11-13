@@ -129,3 +129,12 @@ class PDBInfo(db.Model):
 
     pdb_id = db.Column(db.String, db.ForeignKey("ife_info.pdb_id"), primary_key=True, )
     experimental_technique = db.Column(db.String)
+
+
+class UnitQuality(db.Model):
+    __tablename__ = "unit_quality"
+
+    unit_id = db.Column(db.String, primary_key=True)
+    real_space_r = db.Column(db.Float)
+    real_space_r_z_score = db.Column(db.Float)
+
