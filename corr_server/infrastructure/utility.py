@@ -1,7 +1,7 @@
 from itertools import groupby, islice
 from copy import deepcopy
 from collections import defaultdict, OrderedDict
-from definitions import annotation_new, ssu_helix_numbering
+from definitions import annotation_new, annotation_th, ssu_helix_numbering
 from discrepancy import matrix_discrepancy, relative_discrepancy
 from ordering import optimalLeafOrder
 import numpy as np
@@ -587,11 +587,17 @@ def build_uid(query_list, query_ife):
 def helix_assignment(residue_num):
     for key1, val1 in ssu_helix_numbering.items():
         if len(val1) == 2:
-            if val1[0] <= int(residue_num) <= val1[1]:
-                helix_pos = key1
+            try:
+                if val1[0] <= int(residue_num) <= val1[1]:
+                    helix_pos = key1
+            except:
+                helix_pos = 'NA'
         else:
-            if val1[0] <= int(residue_num) <= val1[1] or val1[2] <= int(residue_num) <= val1[3]:
-                helix_pos = key1
+            try:
+                if val1[0] <= int(residue_num) <= val1[1] or val1[2] <= int(residue_num) <= val1[3]:
+                    helix_pos = key1
+            except:
+                helix_pos = 'NA'
     return helix_pos
 
 
@@ -696,3 +702,15 @@ def process_pw(annotation):
     processed_pw = [pw[i:i + size] for i in range(0, len(pw), size)]
 
     return processed_pw
+
+
+def build_quality_heatmap_data(ife_list, quality_data, query_units):
+    nt_positions = [unit.split('|')[-1] for unit in query_units]
+
+    heatmap_data = []
+    for k1, v1 in enumerate(ife_list):
+        for k2, v2 in enumerate(nt_positions):
+            heatmap_data.append({'ife1': v1[1], 'ife1_index': k1, 'ife2': v2, 'ife2_index': k2,
+                                 'discrepancy': quality_data[k1][k2]})
+
+    return heatmap_data
