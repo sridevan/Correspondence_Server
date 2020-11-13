@@ -408,25 +408,30 @@
     </div>
 
     <div>
-        <!--
-        <div id ='chart_test'>
-            <script type="text/javascript">
-                var data2 = {{ data | tojson | safe }};
-            </script>
-        </div>
-        -->
 
     </div>
   </div>
 </div>
 
+    <div>
+        <div id ='chart_test'>
+            <script type="text/javascript">
+                var data_quality = {{ quality_data | tojson | safe }};
+            </script>
+        </div>
+
+
+    </div>
+
+<!--
 <footer class="container-fluid text-center">
   <p>BGSU RNA Group</p>
 </footer>
+-->
 
 </body>
 
 <!--<script src="http://rna.bgsu.edu/webfr3d/js/heatmap_corr.js"></script>-->
 <script src="/static/js/heatmap.js"></script>
-<!--<script src="/static/js/heatmap_test.js"></script>-->
+<script src="/static/js/heatmap_test.js"></script>
 </html>
