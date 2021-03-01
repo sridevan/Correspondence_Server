@@ -187,7 +187,7 @@ def get_pairwise_tertiary(corr_complete, ife_list):
         if len(sublist) == 2:
             sublist.append('perp')
 
-    pairwise_lr_filtered = ui.get_ssu_helix_numbering(pairwise_lr_filtered)
+    #pairwise_lr_filtered = ui.get_ssu_helix_numbering(pairwise_lr_filtered)
 
     pw_list = [list(g) for i, g in itertools.groupby(pairwise_lr_filtered, lambda x: '|'.join(x[0].split('|')[:3]))]
 
@@ -201,9 +201,9 @@ def get_pairwise_tertiary(corr_complete, ife_list):
             if k == ife:
                 pw_dict[k] = sublist
 
-    rna_chain = ui.get_chain_id(pw_dict)
+    #rna_chain = ui.get_chain_id(pw_dict)
 
-    return pw_dict, rna_chain
+    return pw_dict
 
 
 def get_pairwise_rnap(corr_lst, ife_list):
