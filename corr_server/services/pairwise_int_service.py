@@ -187,7 +187,7 @@ def get_pairwise_tertiary(corr_complete, ife_list):
         if len(sublist) == 2:
             sublist.append('perp')
 
-    #pairwise_lr_filtered = ui.get_ssu_helix_numbering(pairwise_lr_filtered)
+    pairwise_lr_filtered = ui.get_ssu_helix_numbering(pairwise_lr_filtered)
 
     pw_list = [list(g) for i, g in itertools.groupby(pairwise_lr_filtered, lambda x: '|'.join(x[0].split('|')[:3]))]
 
@@ -201,15 +201,15 @@ def get_pairwise_tertiary(corr_complete, ife_list):
             if k == ife:
                 pw_dict[k] = sublist
 
-    #rna_chain = ui.get_chain_id(pw_dict)
+    rna_chain = ui.get_chain_id(pw_dict)
 
-    return pw_dict
+    return pw_dict, rna_chain
 
 
 def get_pairwise_rnap(corr_lst, ife_list):
     pr_dict = OrderedDict()
     for ife in ife_list:
-        pr_dict[ife] = 'No interactions'
+        pr_dict[ife] = 'No RNA-protein contacts'
 
     rna_unit = []
     protein_unit = []
@@ -236,7 +236,15 @@ def get_pairwise_rnap(corr_lst, ife_list):
     sorted_res = sorted(interaction_contacts, key=lambda x: x[0])
     contacts_list = [list(g) for i, g in itertools.groupby(sorted_res, key_func)]
 
+    contacts_list_sorted = []
     for sublist in contacts_list:
+        key_chain = lambda y: (y[-1].split(' ')[1], y[0].split('|')[-1], y[1].split('|')[-1])
+
+        sorted_sublist = sorted(sublist, key=key_chain)
+
+        contacts_list_sorted.append(sorted_sublist)
+
+    for sublist in contacts_list_sorted:
         ife = '|'.join(sublist[0][0].split('|')[:3])
         for k, v in pr_dict.items():
             if k == ife:
