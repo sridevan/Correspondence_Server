@@ -29,18 +29,31 @@ def calculate_interaction_statistics():
 
     #test_ife = '4V9O|1|BA'
     ribosome_components['SSU_16S'] = test_ife
+    # Get all RNA chain from the query structure
     ref_chain_info, rna_chains = rcs.get_rna_chain(test_ife)
+    # Get corresponding nts that bind LSU in the query structure from the reference
     ssu_nts_lsu_corr = rcs.get_nts_corr(ssu_nts_lsu, ref_chain_info)
+    # Infer 23S Chain
     lsu_23S_chain, rna_chains = rcs.infer_23S_chain(ssu_nts_lsu_corr, rna_chains)
+    # Get corresponding nts that bind mRNA in the query structure from the reference
     ssu_nts_mrna_corr = rcs.get_nts_corr(ssu_nts_mrna, ref_chain_info)
+    # Infer mRNA Chain
     mrna_chain, rna_chains = rcs.infer_mrna_chain(ssu_nts_mrna_corr, rna_chains)
+    # Get corresponding nts that bind SSU P-site tRNA in the query structure from the reference
     ssu_nts_ptrna_corr = rcs.get_nts_corr(ssu_nts_trna_p, ref_chain_info)
+    # Infer P-site tRNA chain
     ptrna_chain, rna_chains = rcs.infer_ptrna_chain(ssu_nts_ptrna_corr, rna_chains)
+    # Get corresponding nts that bind SSU A-site tRNA in the query structure from the reference
     ssu_nts_atrna_corr = rcs.get_nts_corr(ssu_nts_trna_a, ref_chain_info)
+    # Infer A-site tRNA chain
     atrna_chain, rna_chains = rcs.infer_atrna_chain(ssu_nts_atrna_corr, rna_chains, mrna_chain)
+    # Infer 5S chain
     lsu_5S_chain, rna_chains = rcs.infer_5S_chain(rna_chains)
+    # Get the pdb & chain information for LSU
     lsu_pdb, lsu_model, lsu_chain = lsu_23S_chain.split('|')
+    # Get corresponding nts that bind LSU E-site tRNA in the query structure from the reference
     lsu_nts_etrna_corr = rcs.get_nts_corr(lsu_nts_trna_e, (lsu_pdb, lsu_chain))
+    # Infer E-site tRNA chain
     etrna_chain, rna_chains = rcs.infer_etrna_chain(lsu_nts_etrna_corr, rna_chains, ptrna_chain)
     ribosome_components['LSU_23S'] = lsu_23S_chain
     ribosome_components['LSU_5S'] = lsu_5S_chain
@@ -48,7 +61,9 @@ def calculate_interaction_statistics():
     ribosome_components['trna_a'] = atrna_chain
     ribosome_components['trna_p'] = ptrna_chain
     ribosome_components['trna_e'] = etrna_chain
+    # Get corresponding nts that bind LSU A-site tRNA in the query structure from the reference
     lsu_nts_atrna_corr = rcs.get_nts_corr(lsu_nts_trna_a, (lsu_pdb, lsu_chain))
+    # Get corresponding nts that bind LSU P-site tRNA in the query structure from the reference
     lsu_nts_ptrna_corr = rcs.get_nts_corr(lsu_nts_trna_p, (lsu_pdb, lsu_chain))
     atrna_lsu_state = rcs.check_atrna_state_lsu(atrna_chain, lsu_nts_trna_a, lsu_nts_trna_p)
 
