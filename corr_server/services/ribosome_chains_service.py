@@ -2,6 +2,7 @@ from collections import OrderedDict
 from data.models import ChainInfo, UnitCorrespondence, UnitPairInteractions
 
 
+# Remove RNA chain from the list once assigned
 def update_chain_list(chain_list, chain_to_remove):
     try:
         chain_list.remove(chain_to_remove)
@@ -11,6 +12,7 @@ def update_chain_list(chain_list, chain_to_remove):
     return chain_list
 
 
+# Get all the RNA chains from the ribosome structure
 def get_rna_chain(ife):
     pdb, model, chain = ife.split('|')
 
@@ -32,6 +34,7 @@ def get_rna_chain(ife):
     return query_info, rna_chains
 
 
+# Get the corresponding nts based on the reference nts in 5J7L
 def get_nts_corr(nts_list, query_chain):
     pdb, chain = query_chain[0], query_chain[1]
 
@@ -46,7 +49,7 @@ def get_nts_corr(nts_list, query_chain):
 
     return nts_corr
 
-
+# Infer the 23S chain
 def infer_23S_chain(corr_nts, rna_chains):
     lsu_23S_chain = ''
     for chain in rna_chains:
@@ -62,7 +65,7 @@ def infer_23S_chain(corr_nts, rna_chains):
 
     return lsu_23S_chain, rna_chains
 
-
+# Infer the mRNA chain
 def infer_mrna_chain(corr_nts, rna_chains):
     mrna_chain = ''
     test_query = []
@@ -80,7 +83,7 @@ def infer_mrna_chain(corr_nts, rna_chains):
 
     return mrna_chain, rna_chains
 
-
+# Infer the P-site tRNA chain
 def infer_ptrna_chain(corr_nts, rna_chains):
     ptrna_chain = ''
     test_query = []
@@ -98,7 +101,7 @@ def infer_ptrna_chain(corr_nts, rna_chains):
 
     return ptrna_chain, rna_chains
 
-
+# Infer the A-site tRNA chain
 def infer_atrna_chain(corr_nts, rna_chains, mrna_chain):
     nr_chain = set()
     for chain in rna_chains:
@@ -125,7 +128,7 @@ def infer_atrna_chain(corr_nts, rna_chains, mrna_chain):
 
     return atrna_chain, rna_chains
 
-
+# Infer the E-site tRNA chain
 def infer_etrna_chain(corr_nts, rna_chains, ptrna_chain):
     nr_chain = []
     possible_etrna_chain = ''
@@ -139,6 +142,8 @@ def infer_etrna_chain(corr_nts, rna_chains, ptrna_chain):
             if query.count() == 1:
                 possible_etrna_chain = chain
 
+    # Check whether P-site tRNA is interacting the E-site in lsu since P-site tRNA can form P/E state
+    # If not, assign the chain to E-site tRNA
     if possible_etrna_chain == ptrna_chain:
         etrna_chain = None
     else:
@@ -148,7 +153,7 @@ def infer_etrna_chain(corr_nts, rna_chains, ptrna_chain):
 
     return etrna_chain, rna_chains
 
-
+# Infer the 5S chain
 def infer_5S_chain(rna_chains):
     chain_length_list = []
     lsu_5S_chain = ''
@@ -156,7 +161,7 @@ def infer_5S_chain(rna_chains):
         pdb, model, chain = ife.split('|')
 
         query = ChainInfo.query.filter(ChainInfo.pdb_id == pdb) \
-                               .filter(ChainInfo.chain_name == chain)
+            .filter(ChainInfo.chain_name == chain)
 
         for row in query:
             chain_length_list.append((ife, row.chain_length))
@@ -169,8 +174,7 @@ def infer_5S_chain(rna_chains):
 
     return lsu_5S_chain, rna_chains
 
-
+# Check the pairwise interactions made by CCA end of the A-site tRNA
+# It can interact with A-site (A/A), P-site (A/P) or with proteins (A/protein)
 def check_atrna_state_lsu(atrna_chain, corr_asite, corr_psite):
     pass
-
-
