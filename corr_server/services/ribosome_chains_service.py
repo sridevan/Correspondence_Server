@@ -49,132 +49,71 @@ def get_nts_corr(nts_list, query_chain):
 
     return nts_corr
 
-# Infer the 23S chain
-def infer_23S_chain(corr_nts, rna_chains):
-    lsu_23S_chain = ''
-    for chain in rna_chains:
-        nt2 = '{}|%'.format(chain)
-        for nt in corr_nts:
-            query = UnitPairInteractions.query.filter(UnitPairInteractions.unit_id_1 == nt) \
-                .filter(UnitPairInteractions.unit_id_2.like(nt2))
 
-            if query.count() == 1:
-                lsu_23S_chain = chain
-
-    rna_chains = update_chain_list(rna_chains, lsu_23S_chain)
-
-    return lsu_23S_chain, rna_chains
-
-# Infer the mRNA chain
-def infer_mrna_chain(corr_nts, rna_chains):
-    mrna_chain = ''
-    test_query = []
-    for chain in rna_chains:
-        nt2 = '{}|%'.format(chain)
-        for nt in corr_nts:
-            test_query.append((nt, nt2))
-            query = UnitPairInteractions.query.filter(UnitPairInteractions.unit_id_1 == nt) \
-                .filter(UnitPairInteractions.unit_id_2.like(nt2))
-
-            if query.count() == 1:
-                mrna_chain = chain
-
-    rna_chains = update_chain_list(rna_chains, mrna_chain)
-
-    return mrna_chain, rna_chains
-
-# Infer the P-site tRNA chain
-def infer_ptrna_chain(corr_nts, rna_chains):
-    ptrna_chain = ''
-    test_query = []
-    for chain in rna_chains:
-        nt2 = '{}|%'.format(chain)
-        for nt in corr_nts:
-            test_query.append((nt, nt2))
-            query = UnitPairInteractions.query.filter(UnitPairInteractions.unit_id_1 == nt) \
-                .filter(UnitPairInteractions.unit_id_2.like(nt2))
-
-            if query.count() == 1:
-                ptrna_chain = chain
-
-    rna_chains = update_chain_list(rna_chains, ptrna_chain)
-
-    return ptrna_chain, rna_chains
-
-# Infer the A-site tRNA chain
-def infer_atrna_chain(corr_nts, rna_chains, mrna_chain):
-    nr_chain = set()
-    for chain in rna_chains:
-        nt2 = '{}|%'.format(chain)
-        for nt in corr_nts:
-            # test_query.append((nt, nt2))
-            query = UnitPairInteractions.query.filter(UnitPairInteractions.unit_id_1 == nt) \
-                .filter(UnitPairInteractions.unit_id_2.like(nt2))
-
-            for row in query:
-                chain2 = '|'.join(row.unit_id_2.split('|')[:3])
-                nr_chain.add(chain2)
-
-    # A-site nts can also interact with mRNA. So we want to remove mRNA chain before assigning a-tRNA if present
+def infer_Asite_tRNA_chain(nr_chain, ribosome_components):
+    chain_name = None
     if len(nr_chain) == 1:
-        atrna_chain = list(nr_chain)[0]
+        chain_name = list(nr_chain)[0]
     elif len(nr_chain) > 1:
-        nr_chain.remove(mrna_chain)
-        atrna_chain = list(nr_chain)[0]
+        nr_chain.remove(ribosome_components['mRNA'])
+        chain_name = list(nr_chain)[0]
     else:
-        atrna_chain = None
+        chain_name = None
 
-    rna_chains = update_chain_list(rna_chains, atrna_chain)
+    return chain_name
 
-    return atrna_chain, rna_chains
 
-# Infer the E-site tRNA chain
-def infer_etrna_chain(corr_nts, rna_chains, ptrna_chain):
-    nr_chain = []
-    possible_etrna_chain = ''
-    for chain in rna_chains:
-        nt2 = '{}|%'.format(chain)
-        for nt in corr_nts:
-            # test_query.append((nt, nt2))
-            query = UnitPairInteractions.query.filter(UnitPairInteractions.unit_id_1 == nt) \
-                .filter(UnitPairInteractions.unit_id_2.like(nt2))
-
-            if query.count() == 1:
-                possible_etrna_chain = chain
-
-    # Check whether P-site tRNA is interacting the E-site in lsu since P-site tRNA can form P/E state
-    # If not, assign the chain to E-site tRNA
-    if possible_etrna_chain == ptrna_chain:
-        etrna_chain = None
+def infer_Esite_tRNA_chain(potential_chain_name, ribosome_components):
+    chain_name = None
+    if chain_name == ribosome_components['trna_p']:
+        chain_name = None
     else:
-        etrna_chain = possible_etrna_chain
+        chain_name = potential_chain_name
 
-    rna_chains = update_chain_list(rna_chains, etrna_chain)
+    return chain_name
 
-    return etrna_chain, rna_chains
 
-# Infer the 5S chain
-def infer_5S_chain(rna_chains):
-    chain_length_list = []
-    lsu_5S_chain = ''
-    for ife in rna_chains:
-        pdb, model, chain = ife.split('|')
+def infer_interacting_chain(corr_nts, rna_chains, ribosome_components=None, chain_type=None):
+    chain_name = None
 
-        query = ChainInfo.query.filter(ChainInfo.pdb_id == pdb) \
-            .filter(ChainInfo.chain_name == chain)
+    if chain_type is None:
+        for chain in rna_chains:
+            nt2 = '{}|%'.format(chain)
+            for nt in corr_nts:
+                query = UnitPairInteractions.query.filter(UnitPairInteractions.unit_id_1 == nt) \
+                    .filter(UnitPairInteractions.unit_id_2.like(nt2))
 
-        for row in query:
-            chain_length_list.append((ife, row.chain_length))
+                if query.count() == 1:
+                    chain_name = chain
 
-    for chain in chain_length_list:
-        if 110 < int(chain[1]) < 130:
-            lsu_5S_chain = chain[0]
+    elif chain_type == 'atrna':
+        nr_chain = set()
+        for chain in rna_chains:
+            nt2 = '{}|%'.format(chain)
+            for nt in corr_nts:
+                # test_query.append((nt, nt2))
+                query = UnitPairInteractions.query.filter(UnitPairInteractions.unit_id_1 == nt) \
+                    .filter(UnitPairInteractions.unit_id_2.like(nt2))
 
-    rna_chains = update_chain_list(rna_chains, lsu_5S_chain)
+                for row in query:
+                    chain2 = '|'.join(row.unit_id_2.split('|')[:3])
+                    nr_chain.add(chain2)
 
-    return lsu_5S_chain, rna_chains
+        chain_name = infer_Asite_tRNA_chain(nr_chain, ribosome_components)
 
-# Check the pairwise interactions made by CCA end of the A-site tRNA
-# It can interact with A-site (A/A), P-site (A/P) or with proteins (A/protein)
-def check_atrna_state_lsu(atrna_chain, corr_asite, corr_psite):
-    pass
+    elif chain_type == 'etrna':
+        for chain in rna_chains:
+            nt2 = '{}|%'.format(chain)
+            for nt in corr_nts:
+                query = UnitPairInteractions.query.filter(UnitPairInteractions.unit_id_1 == nt) \
+                    .filter(UnitPairInteractions.unit_id_2.like(nt2))
+
+                if query.count() == 1:
+                    chain_name = chain
+
+        # Check whether the chain is a P-site tRNA since it can form P/E state. If not, assign it as E-site tRNA chain
+        chain_name = infer_Esite_tRNA_chain(chain_name, ribosome_components)
+
+    rna_chains = update_chain_list(rna_chains, chain_name)
+
+    return chain_name, rna_chains
