@@ -114,6 +114,7 @@ class ChainInfo(db.Model):
     chain_name = db.Column(db.String)
     entity_macromolecule_type = db.Column(db.String)
     compound = db.Column(db.String)
+    chain_length = db.Column(db.Integer)
 
 
 class IfeInfo(db.Model):
