@@ -1,21 +1,37 @@
-from collections import OrderedDict
-from data.models import ChainInfo, UnitCorrespondence, UnitPairInteractions
+from data.models import ChainInfo, UnitCorrespondence, UnitPairInteractions, UnitInfo
+import csv
 
 
-# Remove ribosome component ife once it has been assigned
-def update_chain_list(chain_list, chain_to_remove):
+def remove_ife(ife_list, ife_to_remove):
+    """
+    This removes the ife from the original list once it has been assigned.
+
+    :param ife_list: list
+        A list of ribosome RNA component ifes (tRNA/s, mRNA etc)
+    :param ife_to_remove: string
+        The ife to remove
+    :return: list
+        A list of ribosome RNA component ifes, one ife shorter
+    """
     try:
-        chain_list.remove(chain_to_remove)
-    except:
-        pass
+        ife_list.remove(ife_to_remove)
+    except Exception as e:
+        print e
+        print 'This ife was not found in the list'
 
-    return chain_list
+    return ife_list
 
 
-# Get all the RNA chains from the ribosome structure except the starting chain which
-# is the ife chain
-# only the first ife is included
 def get_components_ife(ife):
+    """
+    This query gets all the RNA chains from the structure of interest except the query
+    chain (16S in this case) and builds the corresponding ifes.
+
+    :param ife: string
+        Query structure ife
+    :return: list
+        A list of RNA component ifes in the structure of interest
+    """
     pdb, _, chain = ife.split('|')
 
     molecule_type = 'Polyribonucleotide (RNA)'
@@ -44,11 +60,11 @@ def get_units_correspondence(units_list, test_info):
     #TODO
     Consider symmetry operators
 
-    :param units_list: List
+    :param units_list: list
         Query list of unit_ids
-    :param test_info: Tuple
+    :param test_info: tuple
         A tuple of (pdb, chain)
-    :return: units_corr: List
+    :return: units_corr: list
         A list of corresponding unit_ids in the test_info
     """
     pdb, chain = test_info[0], test_info[1]
@@ -66,6 +82,22 @@ def get_units_correspondence(units_list, test_info):
 
 
 def units_correspondence(reference_units, test_ssu, test_lsu):
+    """
+    This creates a dict of correspondence in the query structure based on the ref dict. The keys of this dict
+    would be the relevant chain-chain pair (ssu-lsu, ssu-mRNA, ssu-atRNA etc) while the values would be the
+    list of corresponding units in the query structure. For example, the key 'ssu_lsu' would have a list of
+    nucleotides in ssu that should interact with the lsu in the query structure as its value.
+
+    :param reference_units: dict
+        A dictionary that contains the reference nucleotides that make specific contacts between ifes
+    :param test_ssu: tuple
+        A tuple of (pdb, chain) of ssu
+    :param test_lsu: tuple
+        A tuple of (pdb, chain) of lsu
+    :return: dict
+        A dict of correspondence in the query structure based on the ref dict
+        
+    """
     corr_dict = {}
     for key, value in reference_units.items():
         label_1, _, label_3 = key.split('_')
@@ -81,6 +113,17 @@ def units_correspondence(reference_units, test_ssu, test_lsu):
 
 
 def infer_atrna_ife(ifes, ribosome_components):
+    """
+    Check for the presence of mRNA and assign the A-tRNA ife. This needs to be done because nucleotides (A1492 &
+    A1493 Ec) in the decoding loop can interact with mRNA as well.
+
+    :param ifes: list
+        A list of possible ifes that might interact with the SSU A-tRNA binding site nts
+    :param ribosome_components: dict
+        A dict containing ribosome RNA component molecules as keys and the assigned ifes as values
+    :return: String
+        The assigned A-tRNA ife
+    """
     if len(ifes) == 1:
         atrna_ife = list(ifes)[0]
     # assume there could only be two 
@@ -99,14 +142,13 @@ def infer_etrna_ife(possible_etrna_ife, ribosome_components):
     chains that could possibly interact with the E-tRNA binding site in the LSU. Since P-tRNA can form P/E state, we
     need to test for this possibility.
 
-    :param possible_etrna_ife: String
+    :param possible_etrna_ife: string
         Possible E-tRNA ife
-    :param ribosome_components: Dict
-        A dict containing ribosome chains as keys and the assigned ifes as values
+    :param ribosome_components: dict
+        A dict containing ribosome RNA component molecules as keys and the assigned ifes as values
     :return: String
-        E-tRNA ife
+        The assigned E-tRNA ife
     """
-
     if possible_etrna_ife == ribosome_components['peptidyl-trna']:
         etrna_ife = None
     else:
@@ -115,14 +157,19 @@ def infer_etrna_ife(possible_etrna_ife, ribosome_components):
     return etrna_ife
 
 
-def get_interacting_ife(corr_units, component_ifes):
+def get_interacting_ife(corr_units, components_ife):
     """
-    :param corr_units:
-    :param component_ifes:
-    :return:
+    This query returns the ife that makes pairwise interaction/s with the corresponding nts of interest.
+
+    :param corr_units: list
+        A list of unit_ids
+    :param components_ife: list
+        A list of ribosome RNA components ife
+    :return: string
+        The interacting ife
     """
     interacting_ife = None
-    for ife in component_ifes:
+    for ife in components_ife:
         # '5J7L|1|AA|%'
         unit2 = '{}|%'.format(ife)
         for nt in corr_units:
@@ -130,76 +177,83 @@ def get_interacting_ife(corr_units, component_ifes):
                 .filter(UnitPairInteractions.unit_id_2.like(unit2)) \
                 .count()
 
-            # consider same nt interacting more than once
-            # consider changing name
-            # consider if there's more than one chain
             if query >= 1:
                 interacting_ife = ife
 
     return interacting_ife
 
 
-def infer_interacting_chain(corr_nts, rna_chains, ribosome_components=None, chain_type=None):
+def get_interacting_ifes(corr_units, components_ife):
     """
-    :param corr_nts:
-    :param rna_chains:
-    :param ribosome_components:
-    :param chain_type:
-    :return: Chain_name which is an ife
+    This query returns a list of ifes that makes pairwise interaction/s with the corresponding nts of interest.
+
+    :param corr_units: list
+        A list of unit_ids
+    :param components_ife: list
+        A list of ribosome RNA components ife
+    :return: set
+        A set of interacting ifes
     """
-    chain_name = None
+    nr_ifes = set()
+    for ife in components_ife:
+        # '5J7L|1|AA|%'
+        unit2 = '{}|%'.format(ife)
+        for unit in corr_units:
+            query = UnitPairInteractions.query.filter(UnitPairInteractions.unit_id_1 == unit) \
+                .filter(UnitPairInteractions.unit_id_2.like(unit2))
+
+            for row in query:
+                chain2 = '|'.join(row.unit_id_2.split('|')[:3])
+                nr_ifes.add(chain2)
+
+    return nr_ifes
+
+
+def infer_interacting_ife(corr_units, component_ifes, ribosome_components=None, chain_type=None):
+    """
+    This assigns the ife that interact with the corresponding nts of interest.
+
+    :param corr_units: list
+        A list of unit_ids
+    :param component_ifes: list
+        A list of ribosome RNA components ife
+    :param ribosome_components: dict
+        A dict containing ribosome RNA component molecules as keys and the assigned ifes as values
+    :param chain_type: string
+        Molecule type. The value is None by default. Do extra processing if it's an A- or a P-tRNA
+    :return: string
+        The assigned ife
+    """
+    ife = None
 
     if chain_type is None:
-        for chain in rna_chains:
-            # '5J7L|1|AA|%'
-            nt2 = '{}|%'.format(chain)
-            for nt in corr_nts:
-                query = UnitPairInteractions.query.filter(UnitPairInteractions.unit_id_1 == nt) \
-                    .filter(UnitPairInteractions.unit_id_2.like(nt2)) \
-                    .count()
-
-                # consider same nt interacting more than once
-                # consider changing name
-                # consider if there's more than one chain
-                if query >= 1:
-                    chain_name = chain
-                    # return chain_name
+        ife = get_interacting_ife(corr_units, component_ifes)
 
     elif chain_type == 'atrna':
-        nr_chain = set()
-        for chain in rna_chains:
-            nt2 = '{}|%'.format(chain)
-            for nt in corr_nts:
-                # test_query.append((nt, nt2))
-                query = UnitPairInteractions.query.filter(UnitPairInteractions.unit_id_1 == nt) \
-                    .filter(UnitPairInteractions.unit_id_2.like(nt2))
-
-                for row in query:
-                    chain2 = '|'.join(row.unit_id_2.split('|')[:3])
-                    nr_chain.add(chain2)
-
-        chain_name = infer_atrna_ife(nr_chain, ribosome_components)
+        possible_ifes = get_interacting_ifes(corr_units, component_ifes)
+        ife = infer_atrna_ife(possible_ifes, ribosome_components)
 
     elif chain_type == 'etrna':
-        for chain in rna_chains:
-            nt2 = '{}|%'.format(chain)
-            for nt in corr_nts:
-                query = UnitPairInteractions.query.filter(UnitPairInteractions.unit_id_1 == nt) \
-                    .filter(UnitPairInteractions.unit_id_2.like(nt2))
-
-                if query.count() == 1:
-                    chain_name = chain
-
-        # Check whether the chain is a P-site tRNA since it can form P/E state. If not, assign it as E-site tRNA chain
-        chain_name = infer_etrna_ife(chain_name, ribosome_components)
+        possible_ife = get_interacting_ife(corr_units, component_ifes)
+        ife = infer_etrna_ife(possible_ife, ribosome_components)
 
     # remove ife from the original list once it has been assigned
-    rna_chains = update_chain_list(rna_chains, chain_name)
+    component_ifes = remove_ife(component_ifes, ife)
 
-    return chain_name, rna_chains
+    return ife, component_ifes
 
 
 def check_neighboring_contacts(ife, units_corr):
+    """
+    This query checks whether the ife makes any interactions with the nucleotides of interest.
+
+    :param ife: string
+        The ife of interest
+    :param units_corr: list
+        A list of unit_ids
+    :return: bool
+        True if the ife makes interaction/s with the nts of interest
+    """
     unit2 = '{}|%'.format(ife)
     contacts_made = False
 
@@ -214,7 +268,87 @@ def check_neighboring_contacts(ife, units_corr):
     return contacts_made
 
 
+def get_trna_acceptor_nts(ife_info):
+    """
+    This query returns the last three nucleotides (CCA- end, usually position 74-76) of a tRNA molecule
+    :param ife_info: tuple
+        A tuple of (pdb, chain)
+    :return: list
+        A list of units_ids
+    """
+    acceptor_units = []
+    query = UnitInfo.query.filter(UnitInfo.pdb_id == ife_info[0]) \
+        .filter(UnitInfo.chain.like(ife_info[1])) \
+        .order_by(UnitInfo.chain_index.desc()) \
+        .limit(3)
+    for row in query:
+        acceptor_units.append(row.unit_id)
+
+    return acceptor_units
+
+
+def get_protein_contacts_ife(ife):
+    """
+    This reads the RNA-protein contacts file generated by FR3D and returns the protein factor ife that interacts with
+    the CCA-end of tRNA in the LSU (using a distance cutoff of 4.5 Angstroms)
+    :param ife: string
+        The tRNA ife
+    :return: string
+        The protein factor ife
+    """
+    pdb, _, chain = ife.split("|")
+    ife_info = (pdb, chain)
+    acceptor_units = get_trna_acceptor_nts(ife_info)
+
+    nr_ifes = set()
+    with open('/Applications/mamp/htdocs/contact_list_rename/contact_list_{}.csv'.format(pdb), 'U') as f:
+        csv_reader = csv.reader(f, delimiter=',')
+        for lines in csv_reader:
+            for unit in acceptor_units:
+                if unit == str(lines[0]):
+                    protein_ife = '|'.join(lines[3].split('|')[:3])
+                    nr_ifes.add(protein_ife)
+    # Assume we get only one protein ife
+    return list(nr_ifes)[0]
+
+
+def get_compound_name(ife):
+    """
+    This query returns the compound name of the ife
+    :param ife: string
+        The query ife
+    :return: string
+        compound name
+    """
+    pdb, _, chain = ife.split('|')
+
+    compound_name = None
+    query = ChainInfo.query.filter(ChainInfo.pdb_id == pdb) \
+        .filter(ChainInfo.chain_name == chain)
+
+    # Should be just one record. Do we need to loop?
+    for row in query:
+        compound_name = row.compound
+
+    return compound_name
+
+
 def infer_tRNA_state(ribosome_components, trna_type, corr_dict):
+    """
+    This infers the state of the tRNAs based on the contacts they make both on SSU and LSU. Here we are assuming the
+    tRNA to be a full-length molecule. This is not true since some of them can just be anticodon stem-loops (ASLs) or
+    CCA-fragments in the lsu. As such, we need to consider the length as well.
+
+    :param ribosome_components: dict
+        A dict containing ribosome RNA component molecules as keys and the assigned ifes as values
+    :param trna_type: string
+        This could be aminoacyl, peptidyl or exit tRNA
+    :param corr_dict: dict
+        A dict of correspondence in the query structure based on the ref dict
+    :return: string
+        The state of tRNA (A/A, A/P ap/AP etc)
+    """
+
     complete_state = None
     if trna_type == 'aminoacyl-trna':
 
@@ -224,17 +358,28 @@ def infer_tRNA_state(ribosome_components, trna_type, corr_dict):
             SSU_neighboring_contact = check_neighboring_contacts(ribosome_components[trna_type], corr_dict['ssu_ptrna'])
             LSU_neighboring_contact = check_neighboring_contacts(ribosome_components[trna_type], corr_dict['lsu_ptrna'])
 
+            # Chimeric state
             if SSU_neighboring_contact is True:
                 SSU_state = 'ap'
+            # Classic state
             else:
                 SSU_state = 'A'
 
+            # Chimeric state
             if LSU_contact is True and LSU_neighboring_contact is True:
                 LSU_state = 'AP'
+            # Classic state
             elif LSU_contact is True and LSU_neighboring_contact is False:
                 LSU_state = 'A'
+            # Hybrid state
             elif LSU_contact is False and LSU_neighboring_contact is True:
                 LSU_state = 'P'
+            # Interacting with protein factor in LSU - A/T. A/R states
+            elif LSU_contact is False and LSU_neighboring_contact is False:
+                protein_ife = get_protein_contacts_ife(ribosome_components[trna_type])
+                protein_factor_name = get_compound_name(protein_ife)
+                LSU_state = protein_factor_name
+            # Undefined
             else:
                 LSU_state = '*'
 
@@ -248,26 +393,36 @@ def infer_tRNA_state(ribosome_components, trna_type, corr_dict):
             SSU_neighboring_contact = check_neighboring_contacts(ribosome_components[trna_type], corr_dict['ssu_etrna'])
             LSU_neighboring_contact = check_neighboring_contacts(ribosome_components[trna_type], corr_dict['lsu_etrna'])
 
+            # Chimeric state
             if SSU_neighboring_contact is True:
                 SSU_state = 'pe'
+            # Classic state
             else:
                 SSU_state = 'P'
 
+            # Chimeric state
             if LSU_contact is True and LSU_neighboring_contact is True:
                 LSU_state = 'PE'
+            # Classic state
             elif LSU_contact is True and LSU_neighboring_contact is False:
                 LSU_state = 'P'
+            # Hybrid state
             elif LSU_contact is False and LSU_neighboring_contact is True:
                 LSU_state = 'E'
+            # Interacting with protein factor in LSU
+            elif LSU_contact is False and LSU_neighboring_contact is False:
+                protein_ife = get_protein_contacts_ife(ribosome_components[trna_type])
+                protein_factor_name = get_compound_name(protein_ife)
+                LSU_state = protein_factor_name
+            # Undefined
             else:
                 LSU_state = '*'
 
             complete_state = '{}/{}'.format(SSU_state, LSU_state)
 
     elif trna_type == 'exit-trna':
-
+        # The E-tRNA can only be in the E/E state.
         if ribosome_components[trna_type] is not None:
             complete_state = 'E/E'
 
     return complete_state
-
